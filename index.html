@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>寻茶 · 找到属于你的中国茶</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap');
+
+  :root {
+    --ink: #0d1a12;
+    --ink-mid: #152019;
+    --ink-light: #1e2e22;
+    --gold: #c8a96e;
+    --gold-light: #e8d5a3;
+    --gold-dim: rgba(200,169,110,0.15);
+    --cream: #f0ebe0;
+    --cream-dim: #c8c2b5;
+    --green-mist: #7aab8a;
+    --red-seal: #8b2020;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'Noto Serif SC', 'PingFang SC', 'Hiragino Sans GB', 'STSong', serif;
+    overflow-x: hidden;
+  }
+
+  /* ── 水墨纹理背景 ── */
+  .ink-texture {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .ink-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.07;
+  }
+  .ink-blob-1 { width:600px;height:600px;background:#3a6b4a;top:-10%;left:-10%; }
+  .ink-blob-2 { width:400px;height:400px;background:#1e4a2e;bottom:20%;right:-5%; }
+  .ink-blob-3 { width:300px;height:300px;background:#2a5a3a;top:50%;left:40%; }
+
+  /* ── 印章组件 ── */
+  .seal {
+    display: inline-block;
+    border: 2px solid var(--red-seal);
+    color: var(--red-seal);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    padding: 0.3rem 0.5rem;
+    line-height: 1.4;
+    text-align: center;
+    position: relative;
+    font-family: 'Noto Serif SC', serif;
+    opacity: 0.85;
+  }
+  .seal::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border: 1px solid var(--red-seal);
+    opacity: 0.3;
+  }
+
+  /* ── 水墨分隔线 ── */
+  .ink-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  .ink-divider::before, .ink-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(200,169,110,0.3), transparent);
+  }
+  .ink-divider-char {
+    color: var(--gold);
+    font-size: 1rem;
+    opacity: 0.6;
+  }
+
+  /* ── 竹节纹样侧边装饰 ── */
+  .bamboo-deco {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+  .bamboo-deco.left { left: 2rem; }
+  .bamboo-deco.right { right: 2rem; }
+  .bamboo-segment {
+    flex: 1;
+    width: 1px;
+    background: var(--gold);
+    position: relative;
+  }
+  .bamboo-segment::after {
+    content: '';
+    position: absolute;
+    left: -3px; right: -3px;
+    height: 6px;
+    border-top: 1px solid var(--gold);
+    border-bottom: 1px solid var(--gold);
+  }
+  .bamboo-segment:nth-child(odd)::after { top: 30%; }
+  .bamboo-segment:nth-child(even)::after { top: 60%; }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 60% 40%, #1e3d2a 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, #0e2a1a 0%, transparent 50%),
+      var(--ink);
+  }
+
+  /* 山水轮廓 SVG背景 */
+  .hero-mountain {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 45%;
+    opacity: 0.08;
+  }
+
+  /* 圆形光晕 */
+  .hero-circle {
+    position: absolute;
+    width: 520px; height: 520px;
+    border-radius: 50%;
+    border: 1px solid rgba(200,169,110,0.1);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation: circle-breathe 6s ease-in-out infinite;
+  }
+  .hero-circle-2 {
+    width: 380px; height: 380px;
+    border: 1px solid rgba(200,169,110,0.15);
+    animation-delay: 1s;
+  }
+  .hero-circle-3 {
+    width: 240px; height: 240px;
+    border: 1px solid rgba(200,169,110,0.2);
+    animation-delay: 2s;
+  }
+  @keyframes circle-breathe {
+    0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1;}
+    50%{transform:translate(-50%,-50%) scale(1.03);opacity:0.5;}
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 640px;
+  }
+
+  .hero-seal-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fade-up 1s ease 0.3s forwards;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--gold);
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+  }
+
+  .hero-title {
+    font-size: clamp(3.2rem, 9vw, 6rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fade-up 1s ease 0.6s forwards;
+    font-family: 'Noto Serif SC', serif;
+  }
+
+  .hero-title-sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fade-up 1s ease 0.8s forwards;
+  }
+
+  .hero-sub {
+    font-size: 0.95rem;
+    color: var(--cream-dim);
+    line-height: 2;
+    margin-bottom: 3rem;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    animation: fade-up 1s ease 1s forwards;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 2.5rem;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all 0.35s ease;
+    background: transparent;
+    font-family: 'Noto Serif SC', serif;
+    opacity: 0;
+    animation: fade-up 1s ease 1.2s forwards;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+  .hero-cta:hover { color: var(--ink); }
+  .hero-cta:hover::before { transform: scaleX(1); }
+  .hero-cta span { position: relative; z-index: 1; }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--cream-dim); font-size: 0.7rem; letter-spacing: 0.2em;
+    opacity: 0; animation: fade-up 1s ease 2s forwards;
+  }
+  .scroll-line {
+    width: 1px; height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scroll-drop 2.5s ease-in-out infinite;
+  }
+  @keyframes scroll-drop {
+    0%,100%{transform:scaleY(1);opacity:1;}
+    50%{transform:scaleY(0.4);opacity:0.2;}
+  }
+  @keyframes fade-up {
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  /* ─── SECTION COMMON ─── */
+  .section-header {
+    text-align: center;
+    position: relative;
+    margin-bottom: 4rem;
+  }
+  .section-eyebrow {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--gold);
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .section-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+  .section-seal-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 1.2rem; margin-top: 1.2rem;
+  }
+  .section-line {
+    width: 60px; height: 1px;
+    background: linear-gradient(to right, transparent, rgba(200,169,110,0.5));
+  }
+  .section-line.rev {
+    background: linear-gradient(to left, transparent, rgba(200,169,110,0.5));
+  }
+
+  /* ─── QUIZ ─── */
+  #quiz {
+    min-height: 100vh;
+    padding: 7rem 2rem 5rem;
+    display: flex; flex-direction: column; align-items: center;
+    background: var(--ink-mid);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 背景汉字水印 */
+  .bg-char {
+    position: absolute;
+    font-family: 'Noto Serif SC', serif;
+    color: rgba(200,169,110,0.03);
+    font-size: 28vw;
+    font-weight: 600;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.05em;
+  }
+
+  .quiz-wrapper { max-width: 680px; width: 100%; position: relative; z-index: 1; }
+
+  .quiz-progress {
+    display: flex; gap: 0.5rem; margin-bottom: 3.5rem; justify-content: center;
+  }
+  .progress-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--ink-light); border: 1px solid rgba(200,169,110,0.4);
+    transition: all 0.3s ease;
+  }
+  .progress-dot.active { background: var(--gold); transform: scale(1.4); }
+  .progress-dot.done { background: var(--green-mist); border-color: var(--green-mist); }
+
+  .quiz-step { display: none; animation: fade-up 0.5s ease forwards; }
+  .quiz-step.active { display: block; }
+
+  .quiz-question {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+    font-weight: 300; text-align: center;
+    margin-bottom: 0.5rem; line-height: 1.5; letter-spacing: 0.08em;
+  }
+  .quiz-hint {
+    text-align: center; color: var(--cream-dim);
+    font-size: 0.82rem; margin-bottom: 2.5rem;
+    letter-spacing: 0.1em;
+    font-family: 'Playfair Display', serif; font-style: italic;
+  }
+
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .quiz-option {
+    padding: 1.3rem 1.1rem;
+    border: 1px solid rgba(200,169,110,0.15);
+    background: rgba(255,255,255,0.02);
+    cursor: pointer; transition: all 0.25s ease;
+    text-align: left; display: flex; align-items: flex-start; gap: 0.8rem;
+    position: relative; overflow: hidden;
+  }
+  .quiz-option::after {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--gold); transform: scaleY(0);
+    transition: transform 0.25s ease; transform-origin: bottom;
+  }
+  .quiz-option:hover { border-color: rgba(200,169,110,0.4); background: rgba(200,169,110,0.04); }
+  .quiz-option:hover::after { transform: scaleY(1); }
+  .quiz-option.selected { border-color: var(--gold); background: rgba(200,169,110,0.08); }
+  .quiz-option.selected::after { transform: scaleY(1); }
+
+  .opt-icon { font-size: 1.4rem; line-height: 1; flex-shrink: 0; margin-top: 0.1rem; }
+  .opt-text { display: flex; flex-direction: column; gap: 0.25rem; }
+  .opt-title { font-size: 0.92rem; color: var(--cream); letter-spacing: 0.05em; font-family: 'Noto Serif SC', serif; font-weight: 300; }
+  .opt-sub { font-size: 0.75rem; color: var(--cream-dim); letter-spacing: 0.03em; font-family: sans-serif; }
+
+  .quiz-nav {
+    display: flex; justify-content: space-between; align-items: center; margin-top: 2.5rem;
+  }
+  .btn-ghost {
+    background: transparent; border: 1px solid rgba(200,169,110,0.25);
+    color: var(--cream-dim); padding: 0.65rem 1.5rem;
+    cursor: pointer; font-family: 'Noto Serif SC', serif; font-size: 0.85rem;
+    transition: all 0.2s ease; letter-spacing: 0.1em;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-primary {
+    background: transparent; border: 1px solid var(--gold);
+    color: var(--gold); padding: 0.65rem 2rem;
+    cursor: pointer; font-family: 'Noto Serif SC', serif;
+    font-size: 0.85rem; font-weight: 400;
+    transition: all 0.25s ease; letter-spacing: 0.15em;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--gold); transform: scaleX(0);
+    transform-origin: left; transition: transform 0.25s ease;
+  }
+  .btn-primary span { position: relative; z-index: 1; }
+  .btn-primary:hover { color: var(--ink); }
+  .btn-primary:hover::before { transform: scaleX(1); }
+  .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-primary:disabled::before { display: none; }
+
+  /* ─── RESULT ─── */
+  #result {
+    display: none; padding: 6rem 2rem;
+    background: var(--ink); position: relative;
+  }
+  #result.visible { display: block; }
+
+  .result-desc {
+    color: var(--cream-dim); line-height: 1.9;
+    font-size: 0.9rem; max-width: 500px; margin: 0 auto;
+    letter-spacing: 0.05em; text-align: center;
+  }
+
+  /* ─── TEA GRID ─── */
+  .tea-grid {
+    max-width: 1080px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px; background: rgba(200,169,110,0.1);
+    border: 1px solid rgba(200,169,110,0.1);
+  }
+
+  .tea-card {
+    background: var(--ink-mid); padding: 2rem 1.8rem;
+    cursor: pointer; transition: all 0.3s ease;
+    position: relative; overflow: hidden;
+  }
+  .tea-card::before {
+    content: attr(data-zh);
+    position: absolute; right: -0.5rem; bottom: -1rem;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 5rem; font-weight: 600;
+    color: rgba(200,169,110,0.04);
+    line-height: 1; pointer-events: none;
+    transition: all 0.4s ease;
+    letter-spacing: -0.05em;
+  }
+  .tea-card::after {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--tea-accent, var(--gold));
+    transform: scaleX(0); transition: transform 0.35s ease;
+    transform-origin: left;
+  }
+  .tea-card:hover { background: var(--ink-light); }
+  .tea-card:hover::before { color: rgba(200,169,110,0.07); transform: scale(1.05); }
+  .tea-card:hover::after { transform: scaleX(1); }
+
+  .tea-category {
+    font-size: 0.68rem; letter-spacing: 0.25em;
+    color: var(--tea-accent, var(--gold));
+    margin-bottom: 0.6rem; text-transform: uppercase;
+    font-family: 'Playfair Display', serif;
+  }
+  .tea-name {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.35rem; font-weight: 400; margin-bottom: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+  .tea-name-en {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 0.82rem; color: var(--cream-dim); margin-bottom: 1rem;
+  }
+  .tea-tags {
+    display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1rem;
+  }
+  .tea-tag {
+    padding: 0.15rem 0.55rem; border: 1px solid rgba(200,169,110,0.2);
+    font-size: 0.68rem; color: var(--cream-dim); letter-spacing: 0.05em;
+    font-family: sans-serif;
+  }
+  .tea-preview {
+    font-size: 0.83rem; color: var(--cream-dim); line-height: 1.8;
+    display: -webkit-box; -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .tea-arrow {
+    position: absolute; top: 1.8rem; right: 1.8rem;
+    color: var(--tea-accent, var(--gold)); font-size: 1rem;
+    opacity: 0; transition: all 0.3s ease; transform: translateX(-6px);
+  }
+  .tea-card:hover .tea-arrow { opacity: 1; transform: translateX(0); }
+
+  /* ─── ALL TEAS ─── */
+  #all-teas { padding: 6rem 2rem; background: var(--ink-mid); position: relative; overflow: hidden; }
+
+  .filter-tabs {
+    display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem;
+  }
+  .filter-tab {
+    padding: 0.35rem 1rem; border: 1px solid rgba(200,169,110,0.2);
+    background: transparent; color: var(--cream-dim);
+    font-size: 0.78rem; cursor: pointer; transition: all 0.2s ease;
+    font-family: 'Noto Serif SC', serif; letter-spacing: 0.08em;
+  }
+  .filter-tab:hover, .filter-tab.active {
+    border-color: var(--gold); color: var(--gold); background: rgba(200,169,110,0.06);
+  }
+
+  /* ─── MODAL ─── */
+  #modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(10,20,14,0.96); z-index: 100;
+    overflow-y: auto; backdrop-filter: blur(12px);
+  }
+  #modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+
+  .modal-inner {
+    max-width: 760px; width: 100%; padding: 3rem 2.5rem 5rem;
+    position: relative; animation: fade-up 0.4s ease forwards;
+  }
+
+  .modal-close {
+    position: sticky; top: 1.5rem; float: right;
+    background: rgba(200,169,110,0.08); border: 1px solid rgba(200,169,110,0.25);
+    color: var(--gold); width: 36px; height: 36px;
+    cursor: pointer; font-size: 0.9rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s ease; margin-bottom: 1.5rem;
+  }
+  .modal-close:hover { background: var(--gold); color: var(--ink); }
+
+  .modal-top {
+    display: flex; align-items: flex-start; gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .modal-seal-col { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+  .modal-accent-line { width: 1px; flex: 1; min-height: 40px; background: var(--modal-accent, var(--gold)); opacity: 0.4; }
+
+  .modal-category {
+    font-size: 0.7rem; letter-spacing: 0.25em;
+    color: var(--modal-accent, var(--gold));
+    text-transform: uppercase; margin-bottom: 0.5rem;
+    font-family: 'Playfair Display', serif; font-style: italic;
+  }
+  .modal-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    font-weight: 300; line-height: 1.1; margin-bottom: 0.4rem; letter-spacing: 0.08em;
+  }
+  .modal-title-en {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 1rem; color: var(--cream-dim); margin-bottom: 0;
+  }
+
+  .modal-img-wrap {
+    width: 100%; height: 260px; margin-bottom: 2.5rem;
+    position: relative; overflow: hidden;
+    border: 1px solid rgba(200,169,110,0.1);
+  }
+  .modal-img-wrap img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 0.5s ease;
+  }
+  .modal-img-wrap:hover img { transform: scale(1.03); }
+  .modal-img-placeholder-bg {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--ink-light);
+    font-family: 'Noto Serif SC', serif;
+    font-size: 5rem; color: rgba(200,169,110,0.08); font-weight: 600;
+  }
+
+  .modal-sections { display: grid; gap: 2rem; }
+  .modal-section h3 {
+    font-size: 0.7rem; letter-spacing: 0.25em;
+    color: var(--modal-accent, var(--gold));
+    text-transform: uppercase; margin-bottom: 0.9rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(200,169,110,0.12);
+    font-family: 'Playfair Display', serif; font-style: italic;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .modal-section p {
+    color: var(--cream-dim); line-height: 1.95; font-size: 0.9rem; letter-spacing: 0.03em;
+  }
+
+  .flavor-bar-wrap { margin-top: 1.5rem; display: grid; gap: 0.75rem; }
+  .flavor-row { display: flex; align-items: center; gap: 1rem; }
+  .flavor-label { font-size: 0.75rem; color: var(--cream-dim); width: 55px; flex-shrink: 0; letter-spacing: 0.05em; font-family: 'Noto Serif SC', serif; }
+  .flavor-bar { flex: 1; height: 2px; background: rgba(255,255,255,0.07); overflow: hidden; }
+  .flavor-fill { height: 100%; background: var(--modal-accent, var(--gold)); transition: width 1s ease; }
+  .flavor-num { font-size: 0.7rem; color: var(--cream-dim); width: 20px; text-align: right; }
+
+  .match-badge {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    padding: 0.3rem 0.8rem;
+    background: rgba(200,169,110,0.1); border: 1px solid rgba(200,169,110,0.3);
+    color: var(--gold); font-size: 0.72rem; letter-spacing: 0.1em;
+    margin-bottom: 1.5rem; font-family: 'Noto Serif SC', serif;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 3rem 2rem; text-align: center;
+    border-top: 1px solid rgba(200,169,110,0.08);
+    color: var(--cream-dim); font-size: 0.78rem; letter-spacing: 0.15em;
+    background: var(--ink); font-family: 'Noto Serif SC', serif;
+  }
+  footer .footer-seal { margin: 1rem auto 0; display: inline-block; }
+
+  /* ─── LOADING ─── */
+  .loading-overlay {
+    position: fixed; inset: 0; background: var(--ink);
+    z-index: 200; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 2rem; transition: opacity 0.8s ease;
+  }
+  .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+  .loader-char {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 4rem; color: var(--gold);
+    animation: breathe 2s ease-in-out infinite;
+    position: relative;
+  }
+  .loader-char::after {
+    content: '';
+    position: absolute; bottom: -8px; left: 0; right: 0;
+    height: 1px; background: var(--gold); opacity: 0.3;
+  }
+  .loader-text { font-size: 0.7rem; letter-spacing: 0.4em; color: var(--cream-dim); font-family: 'Playfair Display', serif; font-style: italic; }
+  @keyframes breathe {
+    0%,100%{opacity:0.3;transform:scale(0.92);}
+    50%{opacity:1;transform:scale(1.05);}
+  }
+
+  @media(max-width:600px) {
+    .quiz-options { grid-template-columns: 1fr; }
+    .tea-grid { grid-template-columns: 1fr; }
+    .bamboo-deco { display: none; }
+    .modal-inner { padding: 2rem 1.2rem 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 全局水墨纹理 -->
+<div class="ink-texture">
+  <div class="ink-blob ink-blob-1"></div>
+  <div class="ink-blob ink-blob-2"></div>
+  <div class="ink-blob ink-blob-3"></div>
+</div>
+
+<!-- 加载页 -->
+<div class="loading-overlay" id="loader">
+  <div class="loader-char">茶</div>
+  <div class="loader-text">寻 · 茶 · 之 · 旅</div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+
+  <!-- 山水剪影 -->
+  <svg class="hero-mountain" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,400 L0,280 Q80,200 160,240 Q240,280 320,180 Q400,80 480,160 Q560,240 640,120 Q720,0 800,100 Q880,200 960,140 Q1040,80 1120,180 Q1200,280 1280,200 Q1360,120 1440,180 L1440,400 Z" fill="#3a6b4a" opacity="0.5"/>
+    <path d="M0,400 L0,320 Q120,260 240,300 Q360,340 480,240 Q600,140 720,200 Q840,260 960,180 Q1080,100 1200,220 Q1320,340 1440,260 L1440,400 Z" fill="#2a5040" opacity="0.7"/>
+    <path d="M0,400 L0,360 Q180,320 360,350 Q540,380 720,320 Q900,260 1080,340 Q1260,420 1440,340 L1440,400 Z" fill="#1e3a2a" opacity="0.9"/>
+  </svg>
+
+  <div class="hero-circle"></div>
+  <div class="hero-circle hero-circle-2"></div>
+  <div class="hero-circle hero-circle-3"></div>
+
+  <div class="bamboo-deco left">
+    <div class="bamboo-segment"></div><div class="bamboo-segment"></div>
+    <div class="bamboo-segment"></div><div class="bamboo-segment"></div>
+    <div class="bamboo-segment"></div>
+  </div>
+  <div class="bamboo-deco right">
+    <div class="bamboo-segment"></div><div class="bamboo-segment"></div>
+    <div class="bamboo-segment"></div><div class="bamboo-segment"></div>
+    <div class="bamboo-segment"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-seal-row">
+      <div class="seal">中<br>国<br>茶</div>
+      <div class="hero-eyebrow">China Tea · Discovery Guide</div>
+      <div class="seal">尋<br>茶</div>
+    </div>
+    <h1 class="hero-title">寻　茶</h1>
+    <div class="hero-title-sub">Find Your Perfect Chinese Tea</div>
+    <p class="hero-sub">
+      六大茶类，二十种经典<br>
+      三个问题，一杯属于你的茶
+    </p>
+    <a href="#quiz" class="hero-cta"><span>开始寻茶 &nbsp;·&nbsp; Begin</span></a>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    向下探索
+  </div>
+</section>
+
+<!-- ═══ QUIZ ═══ -->
+<section id="quiz">
+  <div class="bg-char">味</div>
+  <div class="quiz-wrapper">
+    <div class="section-header" style="margin-bottom:2.5rem">
+      <span class="section-eyebrow">Taste Profile · 口味测试</span>
+      <div class="section-seal-row">
+        <div class="section-line rev"></div>
+        <div class="seal" style="font-size:0.55rem;padding:0.2rem 0.4rem">测</div>
+        <div class="section-line"></div>
+      </div>
+    </div>
+
+    <div class="quiz-progress">
+      <div class="progress-dot active" id="dot-0"></div>
+      <div class="progress-dot" id="dot-1"></div>
+      <div class="progress-dot" id="dot-2"></div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="quiz-step active" id="step-0">
+      <h2 class="quiz-question">你平时最常喝什么？</h2>
+      <p class="quiz-hint">选择最接近你日常习惯的一项</p>
+      <div class="quiz-options">
+        <div class="quiz-option" data-step="0" data-val="coffee" onclick="selectOption(this)">
+          <div class="opt-icon">☕</div>
+          <div class="opt-text"><span class="opt-title">浓咖啡 · 黑咖啡</span><span class="opt-sub">Espresso、美式</span></div>
+        </div>
+        <div class="quiz-option" data-step="0" data-val="juice" onclick="selectOption(this)">
+          <div class="opt-icon">🧃</div>
+          <div class="opt-text"><span class="opt-title">果汁 · 果茶</span><span class="opt-sub">鲜榨、NFC、水果茶</span></div>
+        </div>
+        <div class="quiz-option" data-step="0" data-val="soda" onclick="selectOption(this)">
+          <div class="opt-icon">🥤</div>
+          <div class="opt-text"><span class="opt-title">汽水 · 碳酸饮料</span><span class="opt-sub">可乐、苏打水、气泡水</span></div>
+        </div>
+        <div class="quiz-option" data-step="0" data-val="latte" onclick="selectOption(this)">
+          <div class="opt-icon">🥛</div>
+          <div class="opt-text"><span class="opt-title">拿铁 · 奶茶</span><span class="opt-sub">咖啡拿铁、珍珠奶茶</span></div>
+        </div>
+        <div class="quiz-option" data-step="0" data-val="water" onclick="selectOption(this)">
+          <div class="opt-icon">💧</div>
+          <div class="opt-text"><span class="opt-title">白开水 · 淡茶</span><span class="opt-sub">矿泉水、花草茶、淡饮</span></div>
+        </div>
+      </div>
+      <div class="quiz-nav">
+        <div></div>
+        <button class="btn-primary" onclick="nextStep()" id="next-0" disabled><span>下一步 →</span></button>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="quiz-step" id="step-1">
+      <h2 class="quiz-question">今天想要什么感觉？</h2>
+      <p class="quiz-hint">选择你此刻最需要的状态</p>
+      <div class="quiz-options">
+        <div class="quiz-option" data-step="1" data-val="focus" onclick="selectOption(this)">
+          <div class="opt-icon">⚡</div>
+          <div class="opt-text"><span class="opt-title">提神醒脑，保持专注</span><span class="opt-sub">需要清醒、有效率感</span></div>
+        </div>
+        <div class="quiz-option" data-step="1" data-val="relax" onclick="selectOption(this)">
+          <div class="opt-icon">😌</div>
+          <div class="opt-text"><span class="opt-title">放松解压，慢下来</span><span class="opt-sub">想喘口气、放空一下</span></div>
+        </div>
+        <div class="quiz-option" data-step="1" data-val="stomach" onclick="selectOption(this)">
+          <div class="opt-icon">🌿</div>
+          <div class="opt-text"><span class="opt-title">养胃暖身，照顾自己</span><span class="opt-sub">胃不太好、天气冷</span></div>
+        </div>
+        <div class="quiz-option" data-step="1" data-val="explore" onclick="selectOption(this)">
+          <div class="opt-icon">🌍</div>
+          <div class="opt-text"><span class="opt-title">纯粹好奇，带我探索</span><span class="opt-sub">想了解中国茶文化</span></div>
+        </div>
+      </div>
+      <div class="quiz-nav">
+        <button class="btn-ghost" onclick="prevStep()">← 返回</button>
+        <button class="btn-primary" onclick="nextStep()" id="next-1" disabled><span>下一步 →</span></button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="quiz-step" id="step-2">
+      <h2 class="quiz-question">你偏好哪种口感？</h2>
+      <p class="quiz-hint">凭直觉选择最吸引你的</p>
+      <div class="quiz-options">
+        <div class="quiz-option" data-step="2" data-val="bold" onclick="selectOption(this)">
+          <div class="opt-icon">🔥</div>
+          <div class="opt-text"><span class="opt-title">浓郁厚重</span><span class="opt-sub">饱满、有存在感、刺激感强</span></div>
+        </div>
+        <div class="quiz-option" data-step="2" data-val="light" onclick="selectOption(this)">
+          <div class="opt-icon">🌱</div>
+          <div class="opt-text"><span class="opt-title">清淡鲜爽</span><span class="opt-sub">轻盈、干净、清凉感</span></div>
+        </div>
+        <div class="quiz-option" data-step="2" data-val="floral" onclick="selectOption(this)">
+          <div class="opt-icon">🌸</div>
+          <div class="opt-text"><span class="opt-title">花香果香</span><span class="opt-sub">芬芳、甜美、有层次感</span></div>
+        </div>
+        <div class="quiz-option" data-step="2" data-val="sweet" onclick="selectOption(this)">
+          <div class="opt-icon">🍯</div>
+          <div class="opt-text"><span class="opt-title">醇厚回甘</span><span class="opt-sub">甜润、余韵悠长、有深度</span></div>
+        </div>
+      </div>
+      <div class="quiz-nav">
+        <button class="btn-ghost" onclick="prevStep()">← 返回</button>
+        <button class="btn-primary" onclick="showResult()" id="next-2" disabled><span>查看推荐 ✦</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ RESULT ═══ -->
+<section id="result">
+  <div class="section-header">
+    <span class="section-eyebrow">For You · 专属推荐</span>
+    <h2 class="section-title">属于你的一杯茶</h2>
+    <p class="result-desc" id="result-desc" style="margin-top:1rem"></p>
+    <div class="section-seal-row" style="margin-top:1.2rem">
+      <div class="section-line rev"></div>
+      <div class="seal" style="font-size:0.55rem;padding:0.2rem 0.4rem">荐</div>
+      <div class="section-line"></div>
+    </div>
+  </div>
+  <div class="tea-grid" id="result-grid"></div>
+  <div style="text-align:center;margin-top:3rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+    <button class="btn-ghost" onclick="resetQuiz()">重新测试</button>
+    <a href="#all-teas" class="btn-ghost" style="display:inline-block;text-decoration:none">浏览全部二十种茶</a>
+  </div>
+</section>
+
+<!-- ═══ ALL TEAS ═══ -->
+<section id="all-teas">
+  <div class="bg-char" style="opacity:0.02">茶</div>
+  <div class="section-header" style="position:relative;z-index:1">
+    <span class="section-eyebrow">Tea Encyclopedia · 茶叶图鉴</span>
+    <h2 class="section-title">中国经典二十茶</h2>
+    <p style="color:var(--cream-dim);font-size:0.83rem;margin-top:0.5rem;letter-spacing:0.08em">点击茶卡，了解产地 · 工艺 · 滋味</p>
+    <div class="section-seal-row" style="margin-top:1.2rem">
+      <div class="section-line rev"></div>
+      <div class="seal" style="font-size:0.55rem;padding:0.2rem 0.4rem">鉴</div>
+      <div class="section-line"></div>
+    </div>
+  </div>
+  <div class="filter-tabs" style="position:relative;z-index:1">
+    <button class="filter-tab active" onclick="filterTeas('all',this)">全部</button>
+    <button class="filter-tab" onclick="filterTeas('绿茶',this)">🌱 绿茶</button>
+    <button class="filter-tab" onclick="filterTeas('红茶',this)">🍂 红茶</button>
+    <button class="filter-tab" onclick="filterTeas('白茶',this)">🤍 白茶</button>
+    <button class="filter-tab" onclick="filterTeas('乌龙茶',this)">🌿 乌龙茶</button>
+    <button class="filter-tab" onclick="filterTeas('黑茶',this)">⬛ 黑茶</button>
+    <button class="filter-tab" onclick="filterTeas('黄茶',this)">🌾 黄茶</button>
+    <button class="filter-tab" onclick="filterTeas('花茶',this)">🌸 花茶</button>
+  </div>
+  <div class="tea-grid" id="all-grid" style="max-width:1080px;margin:0 auto;position:relative;z-index:1"></div>
+</section>
+
+<footer>
+  <div class="ink-divider" style="max-width:400px;margin:0 auto 1.5rem">
+    <div class="ink-divider-char">✦</div>
+  </div>
+  <p>寻茶 &nbsp;·&nbsp; 中国茶文化推荐指南 &nbsp;·&nbsp; 二〇二六</p>
+  <div class="footer-seal">
+    <div class="seal" style="font-size:0.6rem;margin-top:1rem">茶<br>道</div>
+  </div>
+</footer>
+
+<!-- ═══ MODAL ═══ -->
+<div id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-inner" id="modal-content"></div>
+</div>
+
+<script>
+const TEAS = [
+  { id:'longjing', name:'西湖龙井', nameEn:'West Lake Dragon Well', category:'绿茶', accent:'#7ab85a',
+    tags:['清淡','豆香','回甘','入门首选'], flavor:{浓郁:2,鲜爽:5,花香:3,回甘:4},
+    origin:'杭州西湖畔，三面云山一面城。茶园藏在狮峰、梅家坞的山坡间，春雨后雾气未散，采茶人的身影若隐若现。这里是中国茶文化最具代表性的地标。',
+    craft:'全程手工炒制，用手掌在铁锅中反复抓、压、推、磨——这个动作叫"抓炒"，靠掌温和手感控制火候，机器无法复制。明前龙井尤为珍贵，清明前采摘的嫩芽细若针尖。',
+    taste:'入口清鲜，有淡淡的豆香和栗香，回甘持久，茶汤黄绿透亮。不苦不涩，是最适合绿茶入门者的一款。',
+    match:{drinks:['juice','water'],needs:['relax','explore'],flavors:['light','sweet']},
+    img:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&q=80&fit=crop' },
+
+  { id:'maofeng', name:'黄山毛峰', nameEn:'Huangshan Maofeng', category:'绿茶', accent:'#6aaa6a',
+    tags:['兰花香','高山气','鲜醇'], flavor:{浓郁:3,鲜爽:5,花香:4,回甘:3},
+    origin:'安徽黄山，奇松怪石云海之间。海拔800米以上的茶园终年云雾缭绕，高山冷凉的气候让茶叶生长缓慢，内质积累极为丰富。黄山的风景本身就是这款茶最好的注脚。',
+    craft:'采摘标准严格，一芽一叶或一芽两叶，芽叶肥壮匀整。杀青后手工揉捻，烘干时温度分两次控制，先高温定型再低温慢焙，锁住高山的清冽气息。',
+    taste:'汤色清澈微黄，入口有明显的兰花香，鲜醇甘甜，山野气息扑面而来。比龙井多一分野性，适合喜欢层次感的人。',
+    match:{drinks:['juice','water'],needs:['relax','explore'],flavors:['light','floral']},
+    img:'https://images.unsplash.com/photo-1535469618671-e3c0d49f9bc8?w=800&q=80&fit=crop' },
+
+  { id:'biluochun', name:'碧螺春', nameEn:'Biluochun', category:'绿茶', accent:'#5ab87a',
+    tags:['果香','嫩甜','螺旋形'], flavor:{浓郁:2,鲜爽:4,花香:5,回甘:3},
+    origin:'苏州太湖洞庭山，茶树与枇杷、橘子、杨梅间种，果树的花香渗入土壤，再渗入茶叶。采茶季正是果树开花时，整座山甜香弥漫。',
+    craft:'炒制时手不离茶、茶不离锅，边抖边炒边揉，最后搓团显毫——把茶叶搓成螺旋状的小卷，白毫显露。一斤干茶需要六七万颗嫩芽，全靠手工完成。',
+    taste:'茶汤嫩绿，入口即有天然果香，鲜爽清甜，口感细腻柔和。是所有绿茶里果香最突出的一款，几乎不苦涩。',
+    match:{drinks:['juice','latte'],needs:['relax','explore'],flavors:['floral','light']},
+    img:'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=800&q=80&fit=crop' },
+
+  { id:'maojian', name:'信阳毛尖', nameEn:'Xinyang Maojian', category:'绿茶', accent:'#8ab060',
+    tags:['栗香','醇厚','北方绿茶'], flavor:{浓郁:4,鲜爽:3,花香:2,回甘:4},
+    origin:'河南信阳大别山区，北方茶区的代表。纬度偏高，冬季寒冷漫长，茶树生长期短，造就了茶叶独特的板栗香和浓醇口感，与江南绿茶走的是完全不同的风格路线。',
+    craft:'炒制分"生锅"和"熟锅"两道，生锅高温快炒去除青草气，熟锅低温慢炒塑造香型。手工炒制时茶叶在锅中发出沙沙声，老师傅凭声音和手感判断火候。',
+    taste:'汤色黄绿明亮，有浓郁的熟栗香，口感醇厚，略带苦味但回甘明显。比南方绿茶更有分量感，适合喝惯咖啡的人过渡。',
+    match:{drinks:['coffee','soda'],needs:['focus','relax'],flavors:['bold','sweet']},
+    img:'https://images.unsplash.com/photo-1597318181409-cf64d0b5d8a2?w=800&q=80&fit=crop' },
+
+  { id:'guapian', name:'六安瓜片', nameEn:"Lu'an Guapian", category:'绿茶', accent:'#5ab870',
+    tags:['无芽无梗','清香独特','老火'], flavor:{浓郁:2,鲜爽:4,花香:3,回甘:5},
+    origin:'安徽六安大别山，是中国唯一无芽无梗、单片叶制成的绿茶。采摘的不是嫩芽，而是开面的第二、三叶片，这在所有名茶里独一无二。',
+    craft:'去芽去梗后单独炒制，经"生锅→熟锅→毛火→小火→老火"五道工序。最后的"拉老火"要把茶叶放在炭火上反复烘焙，两人抬篓快走，让茶叶在高温中瞬间定型。',
+    taste:'汤色清澈碧绿，口感清冽甘甜，有独特的清香，既不像龙井的豆香也不像毛峰的兰香，自成一格，余味悠长。',
+    match:{drinks:['water','juice'],needs:['stomach','explore'],flavors:['light','sweet']},
+    img:'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&q=80&fit=crop' },
+
+  { id:'lapsang', name:'正山小种', nameEn:'Lapsang Souchong', category:'红茶', accent:'#c87050',
+    tags:['松烟香','桂圆甜','世界红茶鼻祖'], flavor:{浓郁:5,鲜爽:1,花香:2,回甘:5},
+    origin:'福建武夷山桐木关，海拔1200米的原始森林深处。这里是世界红茶的发源地，17世纪红茶第一次从这里走进了欧洲贵族的下午茶桌。桐木关至今仍是保护区，进入需要通行证。',
+    craft:'用松木明火熏焙，这是正山小种最独特的工艺。茶叶在松烟中吸收独特的烟熏气息，形成无可复制的"桂圆香"和"松烟香"。英国人最初喝到这股烟熏味，着迷到专门寻访产地。',
+    taste:'汤色深红如琥珀，入口醇厚，有明显的松烟香和桂圆甜味，加奶后层次更丰富。是最接近欧洲传统红茶风味的中国茶。',
+    match:{drinks:['coffee','latte'],needs:['relax','stomach'],flavors:['bold','sweet']},
+    img:'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=800&q=80&fit=crop' },
+
+  { id:'qihong', name:'祁门红茶', nameEn:'Keemun Black Tea', category:'红茶', accent:'#c06050',
+    tags:['玫瑰香','群芳最','世界三大高香'], flavor:{浓郁:3,鲜爽:2,花香:5,回甘:4},
+    origin:'安徽祁门，山峦叠嶂，常年云雾。与大吉岭、乌瓦并称"世界三大高香红茶"，在英国曾经是皇室御用茶，被称为"群芳最"。徽州古村落掩映在茶山之间。',
+    craft:'发酵程度精准控制，揉捻工序反复多次，使茶叶细胞充分破碎以释放香气。干燥用木炭文火慢烘，历时数小时。祁红的香气成分多达四百余种，其中玫瑰香是标志性特征。',
+    taste:'汤色红艳明亮，玫瑰香气幽雅持久，口感甜醇，苦涩感极低。是所有中国红茶里香气最细腻的一款，单独品饮比加奶更能感受其层次。',
+    match:{drinks:['juice','latte'],needs:['relax','explore'],flavors:['floral','sweet']},
+    img:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&q=80&fit=crop' },
+
+  { id:'dianhong', name:'滇红', nameEn:'Yunnan Black Tea', category:'红茶', accent:'#c86040',
+    tags:['金毫','蜜糖香','云南大叶种'], flavor:{浓郁:5,鲜爽:2,花香:3,回甘:4},
+    origin:'云南凤庆、勐海一带，北回归线穿过的热带边境。这里的茶树有的已经生长了数百年，粗壮的古树与热带植被共存。云南的光照充足，让茶叶内质格外饱满厚实。',
+    craft:'采用云南大叶种茶树，芽头肥壮，金毫显露。揉捻力度比小叶种更重，发酵时间更长。成品金毫满披，在阳光下泛着金色光泽，视觉上就已经先声夺人。',
+    taste:'汤色红浓，入口醇厚强烈，蜜糖香突出，有一种热带水果的甜感。是所有红茶里口感最饱满的一款，加奶加糖都撑得住，非常适合咖啡爱好者。',
+    match:{drinks:['coffee','latte','soda'],needs:['focus','stomach'],flavors:['bold','sweet']},
+    img:'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=800&q=80&fit=crop' },
+
+  { id:'jinjunmei', name:'金骏眉', nameEn:'Jinjunmei', category:'红茶', accent:'#d4804a',
+    tags:['单芽','花蜜香','顶级红茶'], flavor:{浓郁:3,鲜爽:3,花香:5,回甘:5},
+    origin:'福建武夷山桐木关，2005年才诞生的新贵。全程采用原始森林中的野生茶芽，一斤干茶需要约八万颗芽头，每年产量极为有限。',
+    craft:'只取单芽，不经烟熏，采用全新工艺精制。芽头在自然萎凋中缓慢发酵，手工揉捻轻柔细腻，低温慢焙收尾。工艺之精细在红茶中罕见。',
+    taste:'汤色金黄透亮，花蜜香、果香、薯香层叠出现，口感甜润细腻，几乎没有苦涩，回甘绵长持久。是最适合第一次喝中国红茶的人的选择。',
+    match:{drinks:['juice','water'],needs:['relax','explore'],flavors:['floral','sweet']},
+    img:'https://images.unsplash.com/photo-1563822249366-3efb23b8e0c9?w=800&q=80&fit=crop' },
+
+  { id:'yinzhen', name:'白毫银针', nameEn:'Silver Needle', category:'白茶', accent:'#a0b8c8',
+    tags:['单芽','毫香','极致温和'], flavor:{浓郁:1,鲜爽:4,花香:4,回甘:3},
+    origin:'福建福鼎，东海之滨的丘陵茶区。白茶是中国加工最简单的茶类，银针只取肥壮的单芽，白毫密布，形如银针，在阳光下熠熠生辉。',
+    craft:'只有萎凋和干燥两道工序，不揉捻不发酵。茶芽在通风阴凉处自然失水，时间长达72小时以上，依靠自身酶促反应缓慢转化。工序看似简单，对温度湿度的把控却极为考究。',
+    taste:'汤色浅黄清澈，毫香清鲜，入口清甜如白桃，几乎没有苦涩。口感极为轻盈，像在喝一杯有淡淡香气的温泉水，是所有茶类里最温和的一款。',
+    match:{drinks:['water','juice'],needs:['relax','stomach'],flavors:['light','floral']},
+    img:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&q=80&fit=crop' },
+
+  { id:'baimudan', name:'白牡丹', nameEn:'White Peony', category:'白茶', accent:'#b0c0d0',
+    tags:['一芽两叶','蜜感','颜值最高'], flavor:{浓郁:2,鲜爽:3,花香:4,回甘:4},
+    origin:'同产福建福鼎、政和一带。白牡丹取一芽两叶，芽叶连枝，冲泡展开后如一朵牡丹舒展，叶片绿白相间，芽心白毫挺立，名字由此而来，是白茶里颜值最高的一款。',
+    craft:'与银针同工艺，但叶片的加入让滋味更为丰富。萎凋时间同样漫长，芽与叶的水分蒸发速度不同，需要反复翻动调整，确保均匀失水而不损伤茶叶。',
+    taste:'汤色杏黄明亮，毫香与花香并存，口感比银针更饱满，甜度更高，有淡淡的蜜感。是白茶里性价比最高、日常饮用最舒适的一款。',
+    match:{drinks:['juice','water','latte'],needs:['relax','stomach'],flavors:['floral','sweet']},
+    img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fit=crop' },
+
+  { id:'dahongpao', name:'大红袍', nameEn:'Da Hong Pao', category:'乌龙茶', accent:'#c07840',
+    tags:['岩韵','传奇母树','矿物质感'], flavor:{浓郁:5,鲜爽:2,花香:4,回甘:5},
+    origin:'福建武夷山九龙窠，绝壁岩缝中生长的六株母树，是整个中国茶叶界最传奇的存在。母树大红袍已被列为世界文化遗产，停止采摘保护至今。如今市售均为扦插繁育的后代，但岩骨花香的特质代代相传。',
+    craft:'"岩茶"工艺最复杂，萎凋、做青、杀青、揉捻、初焙、复焙，每道工序都影响最终香气走向。其中"做青"需要摇青与静置反复交替，历时十余小时，让茶叶边缘适度氧化，形成独特的"绿叶红镶边"。',
+    taste:'汤色橙红，入口即感受到岩石的矿物质气息——茶人称之为"岩韵"。花香馥郁，口感醇厚，火功香与花果香交织，回甘强烈持久。是最有辨识度的中国茶之一。',
+    match:{drinks:['coffee','soda'],needs:['focus','explore'],flavors:['bold','sweet']},
+    img:'https://images.unsplash.com/photo-1583835746434-cf1534674b41?w=800&q=80&fit=crop' },
+
+  { id:'tieguanyin', name:'铁观音', nameEn:'Tie Guan Yin', category:'乌龙茶', accent:'#80b870',
+    tags:['兰花香','清扬','最易入门'], flavor:{浓郁:2,鲜爽:4,花香:5,回甘:3},
+    origin:'福建安溪，闽南丘陵的茶乡。铁观音曾是中国出口量最大的乌龙茶，在日本和东南亚华人圈家喻户晓。安溪的茶农世代以茶为生，整个县城几乎都与茶相关。',
+    craft:'清香型铁观音发酵程度轻，保留了大量天然花香；浓香型则经过反复焙火，香气更沉稳。做青工艺与大红袍相近，但摇青力度不同，造就了更清扬的兰花香。',
+    taste:'清香型汤色金黄，兰花香清雅飘逸，入口清鲜甘爽，几乎没有苦涩。是乌龙茶里入门门槛最低、接受度最广的一款，非常适合从未喝过中国茶的人。',
+    match:{drinks:['juice','latte','water'],needs:['relax','explore'],flavors:['floral','light']},
+    img:'https://images.unsplash.com/photo-1597318181409-cf64d0b5d8a2?w=800&q=80&fit=crop' },
+
+  { id:'dancong', name:'凤凰单丛', nameEn:'Phoenix Dan Cong', category:'乌龙茶', accent:'#d0904a',
+    tags:['单株采制','鸭屎香','香型最丰富'], flavor:{浓郁:4,鲜爽:2,花香:5,回甘:4},
+    origin:'广东潮州凤凰山，山顶常年云雾，茶树多为百年以上老树。单丛的"单"指单株采制——每一棵树的香型都不同，茶农给每棵树命名：鸭屎香、芝兰香、桂花香、蜜兰香。',
+    craft:'单株单采单制，每棵树的鲜叶分开加工，保留每株茶树的个性香型。做青时根据当天气温湿度随时调整，极度依赖制茶人的经验与直觉。一个好的凤凰单丛师傅，几乎是在与每棵树对话。',
+    taste:'香气是所有乌龙茶里最丰富多变的，高扬浓郁，根据品种不同可以是花香、果香、蜜香。口感醇厚，带有明显的山野气韵，余香在口腔中萦绕许久。',
+    match:{drinks:['juice','coffee'],needs:['explore','relax'],flavors:['floral','bold']},
+    img:'https://images.unsplash.com/photo-1563822249366-3efb23b8e0c9?w=800&q=80&fit=crop' },
+
+  { id:'dongfang', name:'东方美人', nameEn:'Oriental Beauty', category:'乌龙茶', accent:'#d4a060',
+    tags:['虫咬茶','天然蜜香','维多利亚女王'], flavor:{浓郁:3,鲜爽:2,花香:5,回甘:5},
+    origin:'台湾新竹、苗栗山区。这款茶有一个奇特的起源：必须被小绿叶蝉叮咬过的茶叶才能制成，虫害反而是必要条件。茶叶被叮咬后产生自我保护的化学反应，形成独特的蜜香，这在所有茶类里绝无仅有。',
+    craft:'重度发酵，接近红茶的发酵程度，但保留了乌龙茶的做青工艺。芽叶白、绿、黄、红、褐五色相间，干茶外观极为美丽。据说英国维多利亚女王品尝后赞叹不已，赐名"东方美人"。',
+    taste:'汤色橙红蜜黄，天然蜜香馥郁，入口甜润如蜂蜜，果香层次丰富，口感柔和细腻。是最像甜品的一款茶，完全不苦不涩，任何人第一次喝都会喜欢。',
+    match:{drinks:['juice','latte','soda'],needs:['relax','explore'],flavors:['floral','sweet']},
+    img:'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&q=80&fit=crop' },
+
+  { id:'shupuer', name:'普洱熟茶', nameEn:"Ripe Pu'er", category:'黑茶', accent:'#805040',
+    tags:['渥堆发酵','陈香','暖胃'], flavor:{浓郁:5,鲜爽:1,花香:1,回甘:4},
+    origin:'云南西双版纳、普洱一带，热带雨林边缘。这里生长着地球上最古老的茶树，有的树龄超过一千年，当地少数民族傣族、哈尼族世代与茶树共存。古茶山深处，时间仿佛停止了。',
+    craft:'经过"渥堆发酵"——将茶叶堆积洒水，在微生物的作用下加速发酵，模拟生茶自然陈化数十年的效果。这个工艺1973年才被发明，改变了普洱茶的历史。',
+    taste:'汤色红浓如枣，入口醇厚顺滑，有独特的陈香、木香、土香，完全没有苦涩感。暖胃效果显著，冬天喝尤为舒适。',
+    match:{drinks:['coffee','latte'],needs:['stomach','relax'],flavors:['bold','sweet']},
+    img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fit=crop' },
+
+  { id:'shengpuer', name:'普洱生茶', nameEn:"Raw Pu'er", category:'黑茶', accent:'#6a6040',
+    tags:['自然陈化','越陈越香','收藏价值'], flavor:{浓郁:5,鲜爽:3,花香:2,回甘:5},
+    origin:'同产云南，与熟茶同根同源，却是完全不同的两种体验。生茶是普洱的"原始状态"，压制成饼后可以存放数十年，随时间缓慢转化，每一年的口感都在变化。买一饼生茶，是在投资一段时间的旅程。',
+    craft:'杀青后直接晒干压饼，不经人工发酵。茶饼内的微生物在漫长岁月中自然发酵转化，这个过程无法人为干预也无法预测，充满变数。十年、二十年、三十年的老生茶，每一个年份都是独一无二的。',
+    taste:'新茶汤色黄绿，苦涩明显，回甘强烈，有明显的山野气息；陈年后汤色变深，苦涩褪去，转为醇厚甘润。喝生茶需要一些勇气，但回报是其他茶类无法给予的深度体验。',
+    match:{drinks:['coffee','soda'],needs:['focus','explore'],flavors:['bold','sweet']},
+    img:'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=800&q=80&fit=crop' },
+
+  { id:'jasmine', name:'茉莉花茶', nameEn:'Jasmine Tea', category:'花茶', accent:'#d0c080',
+    tags:['窨制','甜美','国民记忆'], flavor:{浓郁:2,鲜爽:3,花香:5,回甘:3},
+    origin:'福建福州、广西横县，茉莉花的主产区。花茶不是一种茶类，而是一种工艺——用鲜花窨制茶叶，让茶坯吸收花香。横县每年夏天，漫山遍野的茉莉花在夜间盛开，空气里都是甜香。',
+    craft:'将茶叶与茉莉鲜花分层堆放，让茶叶在密封环境中吸收花香，数小时后取出花朵，再重新堆放新鲜花朵——这个过程叫"窨花"，高档茉莉花茶要窨制七到九次。花朵最终全部筛除，留下的只有茶叶里的香气。',
+    taste:'汤色黄绿清澈，茉莉花香清新甜美，持久不腻，入口鲜甜，口感柔和顺滑。是中国最受大众喜爱的茶之一，也是许多人童年记忆里"茶"的味道。',
+    match:{drinks:['juice','latte','soda'],needs:['relax','stomach'],flavors:['floral','light']},
+    img:'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=800&q=80&fit=crop' },
+
+  { id:'junshan', name:'君山银针', nameEn:'Jun Shan Silver Needle', category:'黄茶', accent:'#c8b050',
+    tags:['闷黄','贡茶','洞庭湖孤岛'], flavor:{浓郁:2,鲜爽:4,花香:3,回甘:4},
+    origin:'湖南岳阳洞庭湖中的君山岛，四面环水，湖雾终年不散。黄茶是中国最稀有的茶类，懂的人不多，产量极少。君山银针的历史可追溯到唐朝，曾是皇室贡品，岛屿的神秘感与茶的稀有感相互呼应。',
+    craft:'黄茶最独特的工序是"闷黄"——杀青后将茶叶用纸包裹或堆放，在湿热环境中静置，让茶叶轻微发酵变黄。这道工序需要精确把控时间，过短则仍是绿茶口感，过长则品质下降。',
+    taste:'汤色杏黄清澈，入口甘醇鲜爽，比绿茶少了青涩，比白茶多了一分甜润。有淡淡的玉米香和嫩香，口感极为温和细腻，是最不容易引起不适的茶之一。',
+    match:{drinks:['water','juice'],needs:['stomach','relax','explore'],flavors:['light','sweet']},
+    img:'https://images.unsplash.com/photo-1535469618671-e3c0d49f9bc8?w=800&q=80&fit=crop' },
+
+  { id:'mengding', name:'蒙顶黄芽', nameEn:'Mengding Yellow Bud', category:'黄茶', accent:'#d0b840',
+    tags:['两千年历史','焦糖香','茶叶原点'], flavor:{浓郁:2,鲜爽:4,花香:4,回甘:4},
+    origin:'四川雅安蒙顶山，"扬子江中水，蒙顶山上茶"，这句古话让蒙顶山在茶人心中地位崇高。蒙顶山是有文字记录的人工种茶最早的地方，距今已有两千年历史，是名副其实的中国茶叶原点之一。',
+    craft:'闷黄工艺与君山银针相近，但蒙顶黄芽的闷黄时间更长，分多次进行，芽头在纸包中缓慢转化。成品芽条匀整，金黄色泽，是黄茶中外形最为优雅的一款。',
+    taste:'汤色黄亮，甜香持久，入口甘醇，有淡淡的焦糖香和花香，口感介于绿茶和白茶之间，温润而有层次。是喝惯了绿茶想寻求一点变化的人的理想选择。',
+    match:{drinks:['water','juice'],needs:['stomach','explore'],flavors:['light','floral']},
+    img:'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&q=80&fit=crop' }
+];
+
+let currentStep = 0;
+let answers = { drink: null, need: null, flavor: null };
+
+function selectOption(el) {
+  const step = parseInt(el.dataset.step);
+  document.querySelectorAll(`.quiz-option[data-step="${step}"]`).forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  if (step === 0) answers.drink = el.dataset.val;
+  if (step === 1) answers.need = el.dataset.val;
+  if (step === 2) answers.flavor = el.dataset.val;
+  document.getElementById(`next-${step}`).disabled = false;
+}
+
+function nextStep() {
+  document.getElementById(`step-${currentStep}`).classList.remove('active');
+  document.getElementById(`dot-${currentStep}`).classList.replace('active','done');
+  currentStep++;
+  document.getElementById(`step-${currentStep}`).classList.add('active');
+  document.getElementById(`dot-${currentStep}`).classList.add('active');
+}
+
+function prevStep() {
+  document.getElementById(`step-${currentStep}`).classList.remove('active');
+  document.getElementById(`dot-${currentStep}`).classList.remove('active');
+  currentStep--;
+  document.getElementById(`dot-${currentStep}`).classList.remove('done');
+  document.getElementById(`dot-${currentStep}`).classList.add('active');
+  document.getElementById(`step-${currentStep}`).classList.add('active');
+}
+
+function scoreTea(tea) {
+  let s = 0;
+  if (tea.match.drinks.includes(answers.drink)) s += 3;
+  if (tea.match.needs.includes(answers.need)) s += 3;
+  if (tea.match.flavors.includes(answers.flavor)) s += 4;
+  return s;
+}
+
+function showResult() {
+  const scored = TEAS.map(t => ({...t, score: scoreTea(t)})).sort((a,b) => b.score - a.score);
+  const top = scored.filter(t => t.score >= 3).slice(0, 6);
+  const toShow = top.length >= 3 ? top : scored.slice(0, 4);
+  const descMap = {
+    light:'清淡鲜爽',bold:'浓郁厚重',floral:'花香果香',sweet:'醇厚回甘',
+    focus:'提神专注',relax:'放松解压',stomach:'养胃暖身',explore:'探索发现',
+    coffee:'浓咖啡爱好者',juice:'果汁果茶爱好者',soda:'碳酸饮料爱好者',
+    latte:'拿铁奶茶爱好者',water:'淡饮爱好者'
+  };
+  document.getElementById('result-desc').textContent =
+    `作为${descMap[answers.drink]||''}，偏好${descMap[answers.flavor]||''}口感，需要${descMap[answers.need]||''}——以下是最适合你的中国茶。`;
+  renderTeaGrid('result-grid', toShow, true);
+  document.getElementById('result').classList.add('visible');
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+}
+
+function resetQuiz() {
+  currentStep = 0;
+  answers = {drink:null,need:null,flavor:null};
+  for (let i=0;i<3;i++) {
+    document.getElementById(`step-${i}`).classList.remove('active');
+    document.getElementById(`dot-${i}`).classList.remove('active','done');
+    document.querySelectorAll(`.quiz-option[data-step="${i}"]`).forEach(o=>o.classList.remove('selected'));
+    document.getElementById(`next-${i}`).disabled = true;
+  }
+  document.getElementById('step-0').classList.add('active');
+  document.getElementById('dot-0').classList.add('active');
+  document.getElementById('result').classList.remove('visible');
+  document.getElementById('quiz').scrollIntoView({behavior:'smooth'});
+}
+
+function renderTeaGrid(containerId, teas, showMatch) {
+  const grid = document.getElementById(containerId);
+  grid.innerHTML = teas.map(tea => `
+    <div class="tea-card" style="--tea-accent:${tea.accent}" data-zh="${tea.name[0]}" onclick="openModal('${tea.id}')">
+      <div class="tea-category">${tea.category}</div>
+      ${showMatch && tea.score >= 6 ? `<div class="match-badge" style="position:absolute;top:1rem;right:1rem;margin:0;font-size:0.62rem;padding:0.2rem 0.6rem">✦ 强烈推荐</div>` : ''}
+      <div class="tea-name">${tea.name}</div>
+      <div class="tea-name-en">${tea.nameEn}</div>
+      <div class="tea-tags">${tea.tags.map(t=>`<span class="tea-tag">${t}</span>`).join('')}</div>
+      <div class="tea-preview">${tea.taste}</div>
+      <div class="tea-arrow">→</div>
+    </div>
+  `).join('');
+}
+
+function filterTeas(category, btn) {
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = category==='all' ? TEAS : TEAS.filter(t=>t.category===category);
+  renderTeaGrid('all-grid', filtered, false);
+}
+
+function openModal(id) {
+  const tea = TEAS.find(t=>t.id===id);
+  if (!tea) return;
+  document.documentElement.style.setProperty('--modal-accent', tea.accent);
+  const flavorHTML = Object.entries(tea.flavor).map(([k,v])=>`
+    <div class="flavor-row">
+      <span class="flavor-label">${k}</span>
+      <div class="flavor-bar"><div class="flavor-fill" style="width:${v*20}%"></div></div>
+      <span class="flavor-num">${v}/5</span>
+    </div>`).join('');
+
+  document.getElementById('modal-content').innerHTML = `
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div class="modal-top">
+      <div class="modal-seal-col">
+        <div class="seal" style="border-color:${tea.accent};color:${tea.accent};font-size:0.6rem;padding:0.25rem 0.4rem">${tea.name[0]}<br>${tea.name[1]||''}</div>
+        <div class="modal-accent-line" style="background:${tea.accent}"></div>
+      </div>
+      <div>
+        <div class="modal-category">${tea.category}</div>
+        <div class="modal-title">${tea.name}</div>
+        <div class="modal-title-en">${tea.nameEn}</div>
+      </div>
+    </div>
+    <div class="modal-img-wrap">
+      <div class="modal-img-placeholder-bg">${tea.name[0]}</div>
+      <img src="${tea.img}" alt="${tea.name}" onerror="this.style.display='none'"/>
+    </div>
+    <div class="modal-sections">
+      <div class="modal-section">
+        <h3>📍 产地 · 风景意象</h3>
+        <p>${tea.origin}</p>
+      </div>
+      <div class="modal-section">
+        <h3>✋ 制作工艺亮点</h3>
+        <p>${tea.craft}</p>
+      </div>
+      <div class="modal-section">
+        <h3>👄 口感描述</h3>
+        <p>${tea.taste}</p>
+        <div class="flavor-bar-wrap">${flavorHTML}</div>
+      </div>
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('modal-overlay').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) { if (e.target===document.getElementById('modal-overlay')) closeModalDirect(); }
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+window.addEventListener('load', () => {
+  renderTeaGrid('all-grid', TEAS, false);
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1400);
+});
+document.addEventListener('keydown', e => { if (e.key==='Escape') closeModalDirect(); });
+</script>
+</body>
+</html>
