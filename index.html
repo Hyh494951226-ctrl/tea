@@ -574,7 +574,7 @@
   }
 
   .modal-img-wrap {
-    width: 100%; height: 260px; margin-bottom: 2.5rem;
+    width: 100%; height: 380px; margin-bottom: 2.5rem;
     position: relative; overflow: hidden;
     border: 1px solid rgba(200,169,110,0.1);
   }
@@ -620,6 +620,39 @@
     margin-bottom: 1.5rem; font-family: 'Noto Serif SC', serif;
   }
 
+  /* ─── 跨境电商大底按钮样式 ─── */
+  .modal-ecommerce-action {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px dashed rgba(200,169,110,0.15);
+    text-align: center;
+  }
+  .dtc-buy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    background: linear-gradient(135deg, #1e3a2a 0%, #152019 100%);
+    color: var(--gold) !important;
+    border: 1px solid var(--gold);
+    padding: 1rem 3.5rem;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.35s ease;
+    cursor: pointer;
+  }
+  .dtc-buy-btn:hover {
+    background: var(--gold);
+    color: var(--ink) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(200, 169, 110, 0.2);
+  }
+
   /* ─── FOOTER ─── */
   footer {
     padding: 3rem 2rem; text-align: center;
@@ -663,24 +696,20 @@
 </head>
 <body>
 
-<!-- 全局水墨纹理 -->
 <div class="ink-texture">
   <div class="ink-blob ink-blob-1"></div>
   <div class="ink-blob ink-blob-2"></div>
   <div class="ink-blob ink-blob-3"></div>
 </div>
 
-<!-- 加载页 -->
 <div class="loading-overlay" id="loader">
   <div class="loader-char">茶</div>
   <div class="loader-text">寻 · 茶 · 之 · 旅</div>
 </div>
 
-<!-- ═══ HERO ═══ -->
 <section id="hero">
   <div class="hero-bg"></div>
 
-  <!-- 山水剪影 -->
   <svg class="hero-mountain" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,400 L0,280 Q80,200 160,240 Q240,280 320,180 Q400,80 480,160 Q560,240 640,120 Q720,0 800,100 Q880,200 960,140 Q1040,80 1120,180 Q1200,280 1280,200 Q1360,120 1440,180 L1440,400 Z" fill="#3a6b4a" opacity="0.5"/>
     <path d="M0,400 L0,320 Q120,260 240,300 Q360,340 480,240 Q600,140 720,200 Q840,260 960,180 Q1080,100 1200,220 Q1320,340 1440,260 L1440,400 Z" fill="#2a5040" opacity="0.7"/>
@@ -708,10 +737,10 @@
       <div class="hero-eyebrow">China Tea · Discovery Guide</div>
       <div class="seal">尋<br>茶</div>
     </div>
-    <h1 class="hero-title">寻　茶</h1>
+    <h1 class="hero-title">寻 茶</h1>
     <div class="hero-title-sub">Find Your Perfect Chinese Tea</div>
     <p class="hero-sub">
-      六大茶类，二十种经典<br>
+      六大茶类，二十二种经典<br>
       三个问题，一杯属于你的茶
     </p>
     <a href="#quiz" class="hero-cta"><span>开始寻茶 &nbsp;·&nbsp; Begin</span></a>
@@ -723,7 +752,6 @@
   </div>
 </section>
 
-<!-- ═══ QUIZ ═══ -->
 <section id="quiz">
   <div class="bg-char">味</div>
   <div class="quiz-wrapper">
@@ -742,7 +770,6 @@
       <div class="progress-dot" id="dot-2"></div>
     </div>
 
-    <!-- Step 1 -->
     <div class="quiz-step active" id="step-0">
       <h2 class="quiz-question">你平时最常喝什么？</h2>
       <p class="quiz-hint">选择最接近你日常习惯的一项</p>
@@ -774,7 +801,6 @@
       </div>
     </div>
 
-    <!-- Step 2 -->
     <div class="quiz-step" id="step-1">
       <h2 class="quiz-question">今天想要什么感觉？</h2>
       <p class="quiz-hint">选择你此刻最需要的状态</p>
@@ -802,7 +828,6 @@
       </div>
     </div>
 
-    <!-- Step 3 -->
     <div class="quiz-step" id="step-2">
       <h2 class="quiz-question">你偏好哪种口感？</h2>
       <p class="quiz-hint">凭直觉选择最吸引你的</p>
@@ -832,7 +857,6 @@
   </div>
 </section>
 
-<!-- ═══ RESULT ═══ -->
 <section id="result">
   <div class="section-header">
     <span class="section-eyebrow">For You · 专属推荐</span>
@@ -847,17 +871,16 @@
   <div class="tea-grid" id="result-grid"></div>
   <div style="text-align:center;margin-top:3rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
     <button class="btn-ghost" onclick="resetQuiz()">重新测试</button>
-    <a href="#all-teas" class="btn-ghost" style="display:inline-block;text-decoration:none">浏览全部二十种茶</a>
+    <a href="#all-teas" class="btn-ghost" style="display:inline-block;text-decoration:none">浏览全部二十二种茶</a>
   </div>
 </section>
 
-<!-- ═══ ALL TEAS ═══ -->
 <section id="all-teas">
   <div class="bg-char" style="opacity:0.02">茶</div>
   <div class="section-header" style="position:relative;z-index:1">
     <span class="section-eyebrow">Tea Encyclopedia · 茶叶图鉴</span>
-    <h2 class="section-title">中国经典二十茶</h2>
-    <p style="color:var(--cream-dim);font-size:0.83rem;margin-top:0.5rem;letter-spacing:0.08em">点击茶卡，了解产地 · 工艺 · 滋味</p>
+    <h2 class="section-title">中国经典二十二茶</h2>
+    <p style="color:var(--cream-dim);font-size:0.83rem;margin-top:0.5rem;letter-spacing:0.08em">点击茶卡，领略地方生态文旅风光 · 工艺 · 场景化饮用指南</p>
     <div class="section-seal-row" style="margin-top:1.2rem">
       <div class="section-line rev"></div>
       <div class="seal" style="font-size:0.55rem;padding:0.2rem 0.4rem">鉴</div>
@@ -867,6 +890,7 @@
   <div class="filter-tabs" style="position:relative;z-index:1">
     <button class="filter-tab active" onclick="filterTeas('all',this)">全部</button>
     <button class="filter-tab" onclick="filterTeas('绿茶',this)">🌱 绿茶</button>
+    <button class="filter-tab" onclick="filterTeas('抹茶',this)">🍵 抹茶</button>
     <button class="filter-tab" onclick="filterTeas('红茶',this)">🍂 红茶</button>
     <button class="filter-tab" onclick="filterTeas('白茶',this)">🤍 白茶</button>
     <button class="filter-tab" onclick="filterTeas('乌龙茶',this)">🌿 乌龙茶</button>
@@ -887,172 +911,252 @@
   </div>
 </footer>
 
-<!-- ═══ MODAL ═══ -->
 <div id="modal-overlay" onclick="closeModal(event)">
   <div class="modal-inner" id="modal-content"></div>
 </div>
 
 <script>
 const TEAS = [
+  { id:'zhejiang_matcha', name:'浙江抹茶', nameEn:'Zhejiang Matcha', category:'抹茶', accent:'#4a7c59',
+    img:'img/zhejiang_matcha.jpg',
+    envImg:'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?w=1080&q=80&fit=crop',
+    tags:['茶圣故里', '极细研磨', '海苔风味', '数字化出海'], flavor:{浓郁:4,鲜爽:5,花香:2,回甘:4},
+    origin:'浙江杭州及余杭径山等丘陵茶区（径山正是古代茶宴的发源地）。江南水乡烟雨蒙蒙，茶园全幅实行现代黑网遮阴复盖。这里不仅有深厚的茶禅历史积淀，更依托现代农业数字化技术，打造了全球规模最大的现代化高标准外贸抹茶产业生态带。',
+    craft:'在采摘前20-30天进行严格的搭棚遮阴覆盖，使茶叶中叶绿素和茶氨酸大量凝聚。经蒸汽杀青、不揉捻直接烘干制成“碾茶”，最后在低温无尘车间通过超微气流粉碎机超细研磨，粉质细如面粉。',
+    taste:'色泽翠绿如玉，自带江南草木的清鲜气息。入口海苔香明显，苦涩度极低，粉质极其细腻，回甘平缓而持久。',
+    guide:'【现代轻饮/Latte】取2g抹茶粉放入杯中，加入60ml温水（约70°C）用茶筅或电动搅拌器击拂至起泡。随后倒入200ml热或冰燕麦奶/鲜牛奶中，即可得到一杯极具现代高级感的“抹茶燕麦拿铁”，是欧美及东南亚市场的主流首选。',
+    buyUrl:'https://www.amazon.com/s?k=Zhejiang+Matcha',
+    match:{drinks:['latte','juice'],needs:['focus','explore'],flavors:['light','sweet']} },
+
+  { id:'guizhou_matcha', name:'贵州抹茶', nameEn:'Guizhou Premium Matcha', category:'抹茶', accent:'#2e6f40',
+    img:'img/guizhou_matcha.jpg',
+    envImg:'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=1080&q=80&fit=crop',
+    tags:['高原生态', '欧盟标准', '高茶氨酸', '高山净土'], flavor:{浓郁:3,鲜爽:5,花香:2,回甘:5},
+    origin:'贵州铜仁、梵净山等高海拔、多云雾、远离工业污染的高原生态茶仓。这里千峦叠翠、山水纯净，独特的喀斯特地貌与昼夜温差为高山茶树积蓄了极高的氨基酸。通过“茶旅一体化”建设，连绵的高原生态茶海已成为西南绿色文旅的耀眼名片。',
+    craft:'严格遵循国际最高标准管理茶园。采用现代进口蒸青生产线加工，最大程度锁住高原茶树的鲜爽活性。加工全过程实行数字化控温，粉碎粒度达微米级，且完全通过欧盟严格的食品安全清关检测。',
+    taste:'翠绿明亮，口感饱满浓醇，汤味极其纯净。由于茶氨酸含量极高，纯饮时几乎感受不到传统原叶茶的苦涩感。',
+    guide:'【纯饮能量/Matcha Shot】传统纯饮或日常健康极速补给。取2g贵茶抹茶粉，加入80ml纯净温水（65°C-70°C），使用茶筅在碗中快速呈“W”字形击拂，直至表面浮起一层如云朵般细腻绵密的抹茶汤花，直接饮用，清醇提神。',
+    buyUrl:'https://www.amazon.com/s?k=Guizhou+Matcha',
+    match:{drinks:['coffee','water'],needs:['focus','stomach'],flavors:['bold','sweet']} },
+
   { id:'longjing', name:'西湖龙井', nameEn:'West Lake Dragon Well', category:'绿茶', accent:'#7ab85a',
-    tags:['清淡','豆香','回甘','入门首选'], flavor:{浓郁:2,鲜爽:5,花香:3,回甘:4},
-    origin:'杭州西湖畔，三面云山一面城。茶园藏在狮峰、梅家坞的山坡间，春雨后雾气未散，采茶人的身影若隐若现。这里是中国茶文化最具代表性的地标。',
+    img:'img/longjing.jpg',
+    envImg:'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=1080&q=80&fit=crop',
+    tags:['湖光山色', '老石上手炒', '清润豆香', '杭州地标'], flavor:{浓郁:2,鲜爽:5,花香:3,回甘:4},
+    origin:'浙江杭州西湖名胜区。核心产区藏在狮峰、龙井、梅家坞的群山怀抱之中，面向西湖。清晨水汽沿山谷升腾，形成独特的江南生态雾气。西湖的湖光山色、断桥苏堤与这片茶园交织在一起，构构成中国最为经典的文旅山水画卷。',
     craft:'全程手工炒制，用手掌在铁锅中反复抓、压、推、磨——这个动作叫"抓炒"，靠掌温和手感控制火候，机器无法复制。明前龙井尤为珍贵，清明前采摘的嫩芽细若针尖。',
     taste:'入口清鲜，有淡淡的豆香和栗香，回甘持久，茶汤黄绿透亮。不苦不涩，是最适合绿茶入门者的一款。',
-    match:{drinks:['juice','water'],needs:['relax','explore'],flavors:['light','sweet']},
-    img:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&q=80&fit=crop' },
+    guide:'【玻璃杯冲泡法】取3g茶叶放入透明玻璃杯中，倒入85°C左右纯净水至杯身1/3处，摇香润茶，再注水至7分满，静置2分钟即可观赏茶舞、品鉴鲜爽口感。',
+    buyUrl:'https://www.amazon.com/s?k=Longjing+Tea',
+    match:{drinks:['juice','water'],needs:['relax','explore'],flavors:['light','sweet']} },
 
   { id:'maofeng', name:'黄山毛峰', nameEn:'Huangshan Maofeng', category:'绿茶', accent:'#6aaa6a',
-    tags:['兰花香','高山气','鲜醇'], flavor:{浓郁:3,鲜爽:5,花香:4,回甘:3},
-    origin:'安徽黄山，奇松怪石云海之间。海拔800米以上的茶园终年云雾缭绕，高山冷凉的气候让茶叶生长缓慢，内质积累极为丰富。黄山的风景本身就是这款茶最好的注脚。',
+    img:'img/maofeng.jpg',
+    envImg:'https://images.unsplash.com/photo-1605807618218-b7f5f9f6b907?w=1080&q=80&fit=crop',
+    tags:['奇松怪石', '高山冷凉', '兰花清香', '世界名山'], flavor:{浓郁:3,鲜爽:5,花香:4,回甘:3},
+    origin:'安徽黄山风景区名胜带。在奇松、怪石、云海、温泉“四绝”之间，茶园分布在海拔800米以上的深山峡谷中。终年不见直射光的冷凉环境，孕育了超凡脱俗的高山气韵，将名山大川的文旅野性之美展现得淋漓尽致。',
     craft:'采摘标准严格，一芽一叶或一芽两叶，芽叶肥壮匀整。杀青后手工揉捻，烘干时温度分两次控制，先高温定型再低温慢焙，锁住高山的清冽气息。',
     taste:'汤色清澈微黄，入口有明显的兰花香，鲜醇甘甜，山野气息扑面而来。比龙井多一分野性，适合喜欢层次感的人。',
-    match:{drinks:['juice','water'],needs:['relax','explore'],flavors:['light','floral']},
-    img:'https://images.unsplash.com/photo-1535469618671-e3c0d49f9bc8?w=800&q=80&fit=crop' },
+    guide:'【盖碗/玻璃杯冲泡】推荐使用85°C-90°C纯净水。采用中投法，先向杯/碗中注水三分之一，投入3g茶叶，轻摇唤醒高山兰花香，再注水至满，静待1.5分钟享用。',
+    buyUrl:'https://www.amazon.com/s?k=Huangshan+Maofeng',
+    match:{drinks:['juice','water'],needs:['relax','explore'],flavors:['light','floral']} },
 
   { id:'biluochun', name:'碧螺春', nameEn:'Biluochun', category:'绿茶', accent:'#5ab87a',
-    tags:['果香','嫩甜','螺旋形'], flavor:{浓郁:2,鲜爽:4,花香:5,回甘:3},
-    origin:'苏州太湖洞庭山，茶树与枇杷、橘子、杨梅间种，果树的花香渗入土壤，再渗入茶叶。采茶季正是果树开花时，整座山甜香弥漫。',
+    img:'img/biluochun.jpg',
+    envImg:'https://images.unsplash.com/photo-1599598285918-47a61d159fa6?w=1080&q=80&fit=crop',
+    tags:['太湖烟波', '花果复合', '白毫如雪', '江南水乡'], flavor:{浓郁:2,鲜爽:4,花香:5,回甘:3},
+    origin:'江苏苏州太湖之滨的洞庭山。茶树与太湖畔的枇杷、杨梅、柑橘大面积交错混种。烟波浩渺的太湖水气日夜滋养着岛上的生态环境，茶吸果香，花果香与太湖文旅的水乡灵动完美共生。',
     craft:'炒制时手不离茶、茶不离锅，边抖边炒边揉，最后搓团显毫——把茶叶搓成螺旋状的小卷，白毫显露。一斤干茶需要六七万颗嫩芽，全靠手工完成。',
     taste:'茶汤嫩绿，入口即有天然果香，鲜爽清甜，口感细腻柔和。是所有绿茶里果香最突出的一款，几乎不苦涩。',
-    match:{drinks:['juice','latte'],needs:['relax','explore'],flavors:['floral','light']},
-    img:'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=800&q=80&fit=crop' },
+    guide:'【高级上投法】因其极其细嫩，需先向玻璃杯注满80°C热纯净水，然后投入3g碧螺春茶芽。白毫如雪花般随茶芽缓慢下沉，既可优雅赏景，又能品尝到最鲜嫩、不涩的果香。',
+    buyUrl:'https://www.amazon.com/s?k=Biluochun',
+    match:{drinks:['juice','latte'],needs:['relax','explore'],flavors:['floral','light']} },
 
   { id:'maojian', name:'信阳毛尖', nameEn:'Xinyang Maojian', category:'绿茶', accent:'#8ab060',
-    tags:['栗香','醇厚','北方绿茶'], flavor:{浓郁:4,鲜爽:3,花香:2,回甘:4},
-    origin:'河南信阳大别山区，北方茶区的代表。纬度偏高，冬季寒冷漫长，茶树生长期短，造就了茶叶独特的板栗香和浓醇口感，与江南绿茶走的是完全不同的风格路线。',
+    img:'img/maojian.jpg',
+    envImg:'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=1080&q=80&fit=crop',
+    tags:['中原文旅', '高山板栗香', '口感刚劲'], flavor:{浓郁:4,鲜爽:3,花香:2,回甘:4},
+    origin:'河南信阳大别山老区腹地。这里是南北文化的交汇地，高山峻岭林木葱郁。纬度偏高的北方寒冷冬季赋予了这片高山茶区独特的刚毅感，高山茶园风光兼具了北方的雄浑与南方的隽秀。',
     craft:'炒制分"生锅"和"熟锅"两道，生锅高温快炒去除青草气，熟锅低温慢炒塑造香型。手工炒制时茶叶在锅中发出沙沙声，老师傅凭声音和手感判断火候。',
     taste:'汤色黄绿明亮，有浓郁的熟栗香，口感醇厚，略带苦味但回甘明显。比南方绿茶更有分量感，适合喝惯咖啡的人过渡。',
-    match:{drinks:['coffee','soda'],needs:['focus','relax'],flavors:['bold','sweet']},
-    img:'https://images.unsplash.com/photo-1597318181409-cf64d0b5d8a2?w=800&q=80&fit=crop' },
+    guide:'【温水浓泡法】由于内质极厚，冲泡时水温不宜过高，建议用85°C水。置茶量约3g，采用中投法。其浓郁的板栗熟香甚至可以承受3-4次反复冲泡。',
+    buyUrl:'https://www.amazon.com/s?k=Xinyang+Maojian',
+    match:{drinks:['coffee','soda'],needs:['focus','relax'],flavors:['bold','sweet']} },
 
   { id:'guapian', name:'六安瓜片', nameEn:"Lu'an Guapian", category:'绿茶', accent:'#5ab870',
-    tags:['无芽无梗','清香独特','老火'], flavor:{浓郁:2,鲜爽:4,花香:3,回甘:5},
-    origin:'安徽六安大别山，是中国唯一无芽无梗、单片叶制成的绿茶。采摘的不是嫩芽，而是开面的第二、三叶片，这在所有名茶里独一无二。',
+    img:'img/guapian.jpg',
+    envImg:'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1080&q=80&fit=crop',
+    tags:['单片无梗', '炭火拉老火', '山野气息'], flavor:{浓郁:2,鲜爽:4,花香:3,回甘:5},
+    origin:'安徽六安大别山北麓核心自然保护区。群山高耸，苍松翠竹。作为鄂豫皖红绿交融的经典文旅圣地，这里清冽的山泉与千里的竹海，为不需要嫩芽、只需单片大叶的瓜片提供了最富野性的生境。',
     craft:'去芽去梗后单独炒制，经"生锅→熟锅→毛火→小火→老火"五道工序。最后的"拉老火"要把茶叶放在炭火上反复烘焙，两人抬篓快走，让茶叶在高温中瞬间定型。',
     taste:'汤色清澈碧绿，口感清冽甘甜，有独特的清香，既不像龙井的豆香也不像毛峰的兰香，自成一格，余味悠长。',
-    match:{drinks:['water','juice'],needs:['stomach','explore'],flavors:['light','sweet']},
-    img:'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&q=80&fit=crop' },
+    guide:'【传统茶具高水温泡】由于瓜片是单片大叶且经受“老火”烘焙，可用较热的90°C水直冲。取4g茶叶放入玻璃杯或白瓷盖碗中，第一泡静置2分钟，清冽解渴，具有独特的岩骨厚度。',
+    buyUrl:'https://www.amazon.com/s?k=Lu%27an+Guapian',
+    match:{drinks:['water','juice'],needs:['stomach','explore'],flavors:['light','sweet']} },
 
   { id:'lapsang', name:'正山小种', nameEn:'Lapsang Souchong', category:'红茶', accent:'#c87050',
-    tags:['松烟香','桂圆甜','世界红茶鼻祖'], flavor:{浓郁:5,鲜爽:1,花香:2,回甘:5},
-    origin:'福建武夷山桐木关，海拔1200米的原始森林深处。这里是世界红茶的发源地，17世纪红茶第一次从这里走进了欧洲贵族的下午茶桌。桐木关至今仍是保护区，进入需要通行证。',
+    img:'img/lapsang.jpg',
+    envImg:'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=1080&q=80&fit=crop',
+    tags:['武夷桐木关', '原始森林', '红茶鼻祖', '欧洲史诗'], flavor:{浓郁:5,鲜爽:1,花香:2,回甘:5},
+    origin:'福建武夷山国家级自然保护区桐木关。海拔高达1200米，周边是世界级的原始次生林生态系统。作为世界红茶的发源地，乱石错落、青苔遍布的溪谷风光与数百年的青楼熏焙坊交相辉映，承载着大航海时代茶贸出海的传奇记忆。',
     craft:'用松木明火熏焙，这是正山小种最独特的工艺。茶叶在松烟中吸收独特的烟熏气息，形成无可复制的"桂圆香"和"松烟香"。英国人最初喝到这股烟熏味，着迷到专门寻访产地。',
     taste:'汤色深红如琥珀，入口醇厚，有明显的松烟香和桂圆甜味，加奶后层次更丰富。是最接近欧洲传统红茶风味的中国茶。',
-    match:{drinks:['coffee','latte'],needs:['relax','stomach'],flavors:['bold','sweet']},
-    img:'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=800&q=80&fit=crop' },
+    guide:'【纯饮或英式下午茶】用95°C沸水，白瓷盖碗或紫砂壶。5g茶，前三泡快冲快出（10秒内出汤），细品独特的松烟和龙眼甜。亦可完美加入热牛奶和红糖，制成高端熏焙奶茶。',
+    buyUrl:'https://www.amazon.com/s?k=Lapsang+Souchong',
+    match:{drinks:['coffee','latte'],needs:['relax','stomach'],flavors:['bold','sweet']} },
 
   { id:'qihong', name:'祁门红茶', nameEn:'Keemun Black Tea', category:'红茶', accent:'#c06050',
-    tags:['玫瑰香','群芳最','世界三大高香'], flavor:{浓郁:3,鲜爽:2,花香:5,回甘:4},
-    origin:'安徽祁门，山峦叠嶂，常年云雾。与大吉岭、乌瓦并称"世界三大高香红茶"，在英国曾经是皇室御用茶，被称为"群芳最"。徽州古村落掩映在茶山之间。',
+    img:'img/qihong.jpg',
+    envImg:'https://images.unsplash.com/photo-1605197585662-763f96f13bbf?w=1080&q=80&fit=crop',
+    tags:['徽派古村', '祁门高香', '英国皇室御用'], flavor:{浓郁:3,鲜爽:2,花香:5,回甘:4},
+    origin:'安徽祁门。核心茶园镶嵌在粉墙黛瓦的徽派古村落与群山竹海之间。常年的山间阴雾与古老的农业文旅生态圈交织在一起，孕育出了世界三大高香红茶之一的“祁门香”，优雅的非遗古韵是其最核心的文旅背书。',
     craft:'发酵程度精准控制，揉捻工序反复多次，使茶叶细胞充分破碎以释放香气。干燥用木炭文火慢烘，历时数小时。祁红的香气成分多达四百余种，其中玫瑰香是标志性特征。',
     taste:'汤色红艳明亮，玫瑰香气幽雅持久，口感甜醇，苦涩感极低。是所有中国红茶里香气最细腻的一款，单独品饮比加奶更能感受其层次。',
-    match:{drinks:['juice','latte'],needs:['relax','explore'],flavors:['floral','sweet']},
-    img:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&q=80&fit=crop' },
+    guide:'【西式高级壶泡】推荐用90°C纯净水冲泡。取3-4g茶叶于西式瓷壶中，注水闷泡2-3分钟。祁红具有高雅长久的经典“祁门香”（玫瑰与木质复合香），建议纯饮以感受其丝滑。',
+    buyUrl:'https://www.amazon.com/s?k=Keemun+Black+Tea',
+    match:{drinks:['juice','latte'],needs:['relax','explore'],flavors:['floral','sweet']} },
 
   { id:'dianhong', name:'滇红', nameEn:'Yunnan Black Tea', category:'红茶', accent:'#c86040',
-    tags:['金毫','蜜糖香','云南大叶种'], flavor:{浓郁:5,鲜爽:2,花香:3,回甘:4},
-    origin:'云南凤庆、勐海一带，北回归线穿过的热带边境。这里的茶树有的已经生长了数百年，粗壮的古树与热带植被共存。云南的光照充足，让茶叶内质格外饱满厚实。',
+    img:'img/dianhong.jpg',
+    envImg:'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=1080&q=80&fit=crop',
+    tags:['热带雨林', '古树茶海', '肥硕金毫'], flavor:{浓郁:5,鲜爽:2,花香:3,回甘:4},
+    origin:'云南临沧凤庆、西双版纳热带雨林带。这里充满浓郁的秘境风情，巨大的野生古茶树与原始热带植被混生。强烈的紫外线与丰富的雨林地质，让这里兼具了少数民族茶文化文旅与热带大叶种红茶的粗犷之美。',
     craft:'采用云南大叶种茶树，芽头肥壮，金毫显露。揉捻力度比小叶种更重，发酵时间更长。成品金毫满披，在阳光下泛着金色光泽，视觉上就已经先声夺人。',
-    taste:'汤色红浓，入口醇厚强烈，蜜糖香突出，有一种热带水果的甜感。是所有红茶里口感最饱满的一款，加奶加糖都撑得住，非常适合咖啡爱好者。',
-    match:{drinks:['coffee','latte','soda'],needs:['focus','stomach'],flavors:['bold','sweet']},
-    img:'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=800&q=80&fit=crop' },
+    taste:'汤色红浓，入口醇厚强烈，蜜糖香突出，有一种热带水果的甜感。是所有红茶里口感最饱饱的一款，加奶加糖都撑得住，非常适合咖啡爱好者。',
+    guide:'【重口味奶茶基底 / 随身杯】大叶种茶内质狂野，可用95°C水直冲，置茶5g。纯饮蜜糖甜感爆棚，因其碱度高、茶感极强，是海外制作“Dirty Chai / 拿铁红茶”的最完美基底。',
+    buyUrl:'https://www.amazon.com/s?k=Yunnan+Black+Tea',
+    match:{drinks:['coffee','latte','soda'],needs:['focus','stomach'],flavors:['bold','sweet']} },
 
   { id:'jinjunmei', name:'金骏眉', nameEn:'Jinjunmei', category:'红茶', accent:'#d4804a',
-    tags:['单芽','花蜜香','顶级红茶'], flavor:{浓郁:3,鲜爽:3,花香:5,回甘:5},
-    origin:'福建武夷山桐木关，2005年才诞生的新贵。全程采用原始森林中的野生茶芽，一斤干茶需要约八万颗芽头，每年产量极为有限。',
+    img:'img/jinjunmei.jpg',
+    envImg:'https://images.unsplash.com/photo-1594411135451-b851df9a0fcc?w=1080&q=80&fit=crop',
+    tags:['单芽奇迹', '武夷绝壁', '花蜜清香', '高端奢华'], flavor:{浓郁:3,鲜爽:3,花香:5,回甘:5},
+    origin:'福建武夷山国家级自然保护区核心带（桐木关深处）。生长于海拔1500米左右的断裂带绝壁溪谷中。云海翻腾的垂直气候与极其稀缺的单芽野生生态，让金骏眉天生具备了高端定制的顶级红茶奢华文旅体验。',
     craft:'只取单芽，不经烟熏，采用全新工艺精制。芽头在自然萎凋中缓慢发酵，手工揉捻轻柔细腻，低温慢焙收尾。工艺之精细在红茶中罕见。',
     taste:'汤色金黄透亮，花蜜香、果香、薯香层叠出现，口感甜润细腻，几乎没有苦涩，回甘绵长持久。是最适合第一次喝中国红茶的人的选择。',
-    match:{drinks:['juice','water'],needs:['relax','explore'],flavors:['floral','sweet']},
-    img:'https://images.unsplash.com/photo-1563822249366-3efb23b8e0c9?w=800&q=80&fit=crop' },
+    guide:'【高级白瓷盖碗功夫泡】绝对不能用沸水！用85°C-90°C水，投入4g单芽。注水后5秒内必须出汤，连续可泡10泡以上。汤色金黄泛着光泽，入口全是纯粹的花蜜高级甜感。',
+    buyUrl:'https://www.amazon.com/s?k=Jinjunmei',
+    match:{drinks:['juice','water'],needs:['relax','explore'],flavors:['floral','sweet']} },
 
   { id:'yinzhen', name:'白毫银针', nameEn:'Silver Needle', category:'白茶', accent:'#a0b8c8',
-    tags:['单芽','毫香','极致温和'], flavor:{浓郁:1,鲜爽:4,花香:4,回甘:3},
-    origin:'福建福鼎，东海之滨的丘陵茶区。白茶是中国加工最简单的茶类，银针只取肥壮的单芽，白毫密布，形如银针，在阳光下熠熠生辉。',
+    img:'img/yinzhen.jpg',
+    envImg:'https://images.unsplash.com/photo-1504618223053-559bdef9dd5a?w=1080&q=80&fit=crop',
+    tags:['海上仙山', '白毫如银', '温润如玉', '极简主义'], flavor:{浓郁:1,鲜爽:4,花香:4,回甘:3},
+    origin:'福建福鼎太姥山风景区。太姥山“海上仙山”的绝美花岗岩地貌与临海的暖湿气流在此汇聚。漫山野白茶生态园终年海雾弥漫，道教文化与极简纯粹的白茶生态结合，构成了绝佳的康养文旅胜地。',
     craft:'只有萎凋和干燥两道工序，不揉捻不发酵。茶芽在通风阴凉处自然失水，时间长达72小时以上，依靠自身酶促反应缓慢转化。工序看似简单，对温度湿度的把控却极为考究。',
     taste:'汤色浅黄清澈，毫香清鲜，入口清甜如白桃，几乎没有苦涩。口感极为轻盈，像在喝一杯有淡淡香气的温泉水，是所有茶类里最温和的一款。',
-    match:{drinks:['water','juice'],needs:['relax','stomach'],flavors:['light','floral']},
-    img:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&q=80&fit=crop' },
+    guide:'【盖碗或高级透明长杯】使用90°C左右纯净水，取3g单芽。白毫银针极度耐泡，第一泡可闷1分钟让毫香全面释放。纯饮口感轻盈如温泉，白桃和草木鲜甜回甘曼妙。',
+    buyUrl:'https://www.amazon.com/s?k=Silver+Needle+White+Tea',
+    match:{drinks:['water','juice'],needs:['relax','stomach'],flavors:['light','floral']} },
 
   { id:'baimudan', name:'白牡丹', nameEn:'White Peony', category:'白茶', accent:'#b0c0d0',
-    tags:['一芽两叶','蜜感','颜值最高'], flavor:{浓郁:2,鲜爽:3,花香:4,回甘:4},
-    origin:'同产福建福鼎、政和一带。白牡丹取一芽两叶，芽叶连枝，冲泡展开后如一朵牡丹舒展，叶片绿白相间，芽心白毫挺立，名字由此而来，是白茶里颜值最高的一款。',
+    img:'img/baimudan.jpg',
+    envImg:'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=1080&q=80&fit=crop',
+    tags:['一芽两叶', '冷萃神品', '蜜桃甜润'], flavor:{浓郁:2,鲜爽:3,花香:4,回甘:4},
+    origin:'福建宁德福鼎、政和一带。高山台地开阔，千亩茶海迎海风而立。这里山峦起伏平缓，春季漫山野花绽放，白牡丹一芽两叶的连枝形态，宛如野生花卉在山谷漫步，最富自然野趣。',
     craft:'与银针同工艺，但叶片的加入让滋味更为丰富。萎凋时间同样漫长，芽与叶的水分蒸发速度不同，需要反复翻动调整，确保均匀失水而不损伤茶叶。',
     taste:'汤色杏黄明亮，毫香与花香并存，口感比银针更饱满，甜度更高，有淡淡的蜜感。是白茶里性价比最高、日常饮用最舒适的一款。',
-    match:{drinks:['juice','water','latte'],needs:['relax','stomach'],flavors:['floral','sweet']},
-    img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fit=crop' },
+    guide:'【多场景全能冲泡法】既可用盖碗90°C功夫泡快出（甜度高）；也极为适合海外流行的【冷泡法/Cold Brew】：投入4g茶叶于500ml冷矿泉水中，放冰箱冷藏8小时，即得一杯带有天然蜜桃香的无糖高甜冷萃茶。',
+    buyUrl:'https://www.amazon.com/s?k=White+Peony+White+Tea',
+    match:{drinks:['juice','water','latte'],needs:['relax','stomach'],flavors:['floral','sweet']} },
 
   { id:'dahongpao', name:'大红袍', nameEn:'Da Hong Pao', category:'乌龙茶', accent:'#c07840',
-    tags:['岩韵','传奇母树','矿物质感'], flavor:{浓郁:5,鲜爽:2,花香:4,回甘:5},
-    origin:'福建武夷山九龙窠，绝壁岩缝中生长的六株母树，是整个中国茶叶界最传奇的存在。母树大红袍已被列为世界文化遗产，停止采摘保护至今。如今市售均为扦插繁育的后代，但岩骨花香的特质代代相传。',
+    img:'img/dahongpao.jpg',
+    envImg:'https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=1080&q=80&fit=crop',
+    tags:['武夷岩骨', '三十六峰九曲溪', '岩韵天成', '双世遗地标'], flavor:{浓郁:5,鲜爽:2,花香:4,回甘:5},
+    origin:'福建武夷山风景名胜区。这里是联合国教科文组织评定的“世界文化与自然双遗产地”，三十六峰拔地而起，九曲溪蜿蜒环绕。大红袍生长的绝壁丹霞盆景式岩缝，是全球“岩茶文旅”当之无愧的皇冠明珠。',
     craft:'"岩茶"工艺最复杂，萎凋、做青、杀青、揉捻、初焙、复焙，每道工序都影响最终香气走向。其中"做青"需要摇青与静置反复交替，历时十余小时，让茶叶边缘适度氧化，形成独特的"绿叶红镶边"。',
     taste:'汤色橙红，入口即感受到岩石的矿物质气息——茶人称之为"岩韵"。花香馥郁，口感醇厚，火功香与花果香交织，回甘强烈持久。是最有辨识度的中国茶之一。',
-    match:{drinks:['coffee','soda'],needs:['focus','explore'],flavors:['bold','sweet']},
-    img:'https://images.unsplash.com/photo-1583835746434-cf1534674b41?w=800&q=80&fit=crop' },
+    guide:'【紫砂壶/盖碗 100°C狂飙冲泡】必须用100°C沸水，彻底激活炭火焙功！投茶量重（7g-8g），前四泡注水后2-5秒内必须立刻把茶汤倒出。感受强烈的“岩骨花香”和标志性矿物质喉韵。',
+    buyUrl:'https://www.amazon.com/s?k=Da+Hong+Pao',
+    match:{drinks:['coffee','soda'],needs:['focus','explore'],flavors:['bold','sweet']} },
 
   { id:'tieguanyin', name:'铁观音', nameEn:'Tie Guan Yin', category:'乌龙茶', accent:'#80b870',
-    tags:['兰花香','清扬','最易入门'], flavor:{浓郁:2,鲜爽:4,花香:5,回甘:3},
-    origin:'福建安溪，闽南丘陵的茶乡。铁观音曾是中国出口量最大的乌龙茶，在日本和东南亚华人圈家喻户晓。安溪的茶农世代以茶为生，整个县城几乎都与茶相关。',
-    craft:'清香型铁观音发酵程度轻，保留了大量天然花香；浓香型则经过反复焙火，香气更沉稳。做青工艺与大红袍相近，但摇青力度不同，造就了更清扬的兰花香。',
+    img:'img/tieguanyin.jpg',
+    envImg:'https://images.unsplash.com/photo-1545167622-3a6ac756afa4?w=1080&q=80&fit=crop',
+    tags:['铁韵观音', '闽南功夫茶', '飘逸兰花香'], flavor:{浓郁:2,鲜爽:4,花香:5,回甘:3},
+    origin:'福建安溪。核心茶园绵延于闽南连绵起伏、红壤广布的丘陵茶乡间。古老的土楼、传统的铁观音功夫茶艺与现代生态观光茶园结合，构建了极具闽南宗族与传统民俗色彩的丰厚文旅体验。',
+    craft:'清香型铁观音发烟程度轻，保留了大量天然花香；浓香型则经过反复焙火，香气更沉稳。做青工艺与大红袍相近，但摇青力度不同，造就了更清扬的兰花香。',
     taste:'清香型汤色金黄，兰花香清雅飘逸，入口清鲜甘爽，几乎没有苦涩。是乌龙茶里入门门槛最低、接受度最广的一款，非常适合从未喝过中国茶的人。',
-    match:{drinks:['juice','latte','water'],needs:['relax','explore'],flavors:['floral','light']},
-    img:'https://images.unsplash.com/photo-1597318181409-cf64d0b5d8a2?w=800&q=80&fit=crop' },
+    guide:'【经典功夫茶/盖碗】用95°C-100°C水，投茶7g（颗粒状卷曲）。第一泡温润洗茶不喝。随后每泡10-15秒出汤。其音韵显著，有著名的“七泡有余香”之称，兰花香高扬清凉。',
+    buyUrl:'https://www.amazon.com/s?k=Tie+Guan+Yin',
+    match:{drinks:['juice','latte','water'],needs:['relax','explore'],flavors:['floral','light']} },
 
   { id:'dancong', name:'凤凰单丛', nameEn:'Phoenix Dan Cong', category:'乌龙茶', accent:'#d0904a',
-    tags:['单株采制','鸭屎香','香型最丰富'], flavor:{浓郁:4,鲜爽:2,花香:5,回甘:4},
-    origin:'广东潮州凤凰山，山顶常年云雾，茶树多为百年以上老树。单丛的"单"指单株采制——每一棵树的香型都不同，茶农给每棵树命名：鸭屎香、芝兰香、桂花香、蜜兰香。',
+    img:'img/dancong.jpg',
+    envImg:'https://images.unsplash.com/photo-1544084944-15269ec7b5a0?w=1080&q=80&fit=crop',
+    tags:['潮州古城', '凤凰天池', '香气轰炸', '鸭屎香传奇'], flavor:{浓郁:4,鲜爽:2,花香:5,回甘:4},
+    origin:'广东潮州凤凰山。海拔1000米以上的山顶拥有绝美的凤凰天池火山景观。高山乱石成群，常年云雾。潮州深厚的非遗文旅、老街舌尖美食与古茶树单株采制的传奇香气交织，最具粤式精致生活的文旅神韵。',
     craft:'单株单采单制，每棵树的鲜叶分开加工，保留每株茶树的个性香型。做青时根据当天气温湿度随时调整，极度依赖制茶人的经验与直觉。一个好的凤凰单丛师傅，几乎是在与每棵树对话。',
     taste:'香气是所有乌龙茶里最丰富多变的，高扬浓郁，根据品种不同可以是花香、果香、蜜香。口感醇厚，带有明显的山野气韵，余香在口腔中萦绕许久。',
-    match:{drinks:['juice','coffee'],needs:['explore','relax'],flavors:['floral','bold']},
-    img:'https://images.unsplash.com/photo-1563822249366-3efb23b8e0c9?w=800&q=80&fit=crop' },
+    guide:'【潮汕工夫茶暴烈泡法】“高冲低洒，括沫淋盖”。用大沸水直冲，投茶量充满盖碗的70%（约7-8g）。必须快进快出，不可有丝毫犹豫迟滞（出汤通常不超过5秒），完美逼出广受海外欢迎的“鸭屎香”爆发性花果香。',
+    buyUrl:'https://www.amazon.com/s?k=Phoenix+Dan+Cong',
+    match:{drinks:['juice','coffee'],needs:['explore','relax'],flavors:['floral','bold']} },
 
   { id:'dongfang', name:'东方美人', nameEn:'Oriental Beauty', category:'乌龙茶', accent:'#d4a060',
-    tags:['虫咬茶','天然蜜香','维多利亚女王'], flavor:{浓郁:3,鲜爽:2,花香:5,回甘:5},
-    origin:'台湾新竹、苗栗山区。这款茶有一个奇特的起源：必须被小绿叶蝉叮咬过的茶叶才能制成，虫害反而是必要条件。茶叶被叮咬后产生自我保护的化学反应，形成独特的蜜香，这在所有茶类里绝无仅有。',
+    img:'img/dongfang.jpg',
+    envImg:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1080&q=80&fit=crop',
+    tags:['台湾新竹', '蝉咬奇迹', '高甜白桃蜜香'], flavor:{浓郁:3,鲜爽:2,花香:5,回甘:5},
+    origin:'台湾新竹、苗栗山城名胜区。这里盛产重度起伏、饱受阳光和海风吹拂的生态丘陵。必须拒绝化肥农药以吸引小绿叶蝉叮咬。连绵的水杉林与虫鸣鸟叫的天然乐章，造就了其国际化的浪漫文旅格调。',
     craft:'重度发酵，接近红茶的发酵程度，但保留了乌龙茶的做青工艺。芽叶白、绿、黄、红、褐五色相间，干茶外观极为美丽。据说英国维多利亚女王品尝后赞叹不已，赐名"东方美人"。',
     taste:'汤色橙红蜜黄，天然蜜香馥郁，入口甜润如蜂蜜，果香层次丰富，口感柔和细腻。是最像甜品的一款茶，完全不苦不涩，任何人第一次喝都会喜欢。',
-    match:{drinks:['juice','latte','soda'],needs:['relax','explore'],flavors:['floral','sweet']},
-    img:'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&q=80&fit=crop' },
+    guide:'【高级玻璃壶冲泡 / 下午茶伴侣】最佳水温85°C-90°C，防止烫伤其柔嫩的虫咬芽叶。取4-5g茶叶，闷泡40秒左右出汤。口感如红茶般甜润，带着熟果与醇厚蜂蜜香，极度适合搭配西式糕点。',
+    buyUrl:'https://www.amazon.com/s?k=Oriental+Beauty+Tea',
+    match:{drinks:['juice','latte','soda'],needs:['relax','explore'],flavors:['floral','sweet']} },
 
   { id:'shupuer', name:'普洱熟茶', nameEn:"Ripe Pu'er", category:'黑茶', accent:'#805040',
-    tags:['渥堆发酵','陈香','暖胃'], flavor:{浓郁:5,鲜爽:1,花香:1,回甘:4},
-    origin:'云南西双版纳、普洱一带，热带雨林边缘。这里生长着地球上最古老的茶树，有的树龄超过一千年，当地少数民族傣族、哈尼族世代与茶树共存。古茶山深处，时间仿佛停止了。',
+    img:'img/shupuer.jpg',
+    envImg:'https://images.unsplash.com/photo-1545167622-3a6ac756afa4?w=1080&q=80&fit=crop',
+    tags:['西双版纳', '古六大茶山', '暖胃木质陈香'], flavor:{浓郁:5,鲜爽:1,花香:1,回甘:4},
+    origin:'云南西双版纳及普洱。核心古茶山隐匿在澜沧江两岸辽阔的原始热带雨林中。这里有上千年的野生古茶树王与古老的茶马古道遗址。热带傣族风情与马帮文化的沉淀，提供了中国独一无二的秘境文旅体验。',
     craft:'经过"渥堆发酵"——将茶叶堆积洒水，在微生物的作用下加速发酵，模拟生茶自然陈化数十年的效果。这个工艺1973年才被发明，改变了普洱茶的历史。',
     taste:'汤色红浓如枣，入口醇厚顺滑，有独特的陈香、木香、土香，完全没有苦涩感。暖胃效果显著，冬天喝尤为舒适。',
-    match:{drinks:['coffee','latte'],needs:['stomach','relax'],flavors:['bold','sweet']},
-    img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fit=crop' },
+    guide:'【紫砂壶高温洗茶重泡】沸水100°C，投茶5g。因紧压或渥堆需要，前1-2泡必须作为“洗茶/润茶”倒掉不喝。第三泡开始正式出汤，每泡保持15秒，红浓如红酒，陈香醇厚、极致养胃。',
+    buyUrl:'https://www.amazon.com/s?k=Ripe+Puerh+Tea',
+    match:{drinks:['coffee','latte'],needs:['stomach','relax'],flavors:['bold','sweet']} },
 
   { id:'shengpuer', name:'普洱生茶', nameEn:"Raw Pu'er", category:'黑茶', accent:'#6a6040',
-    tags:['自然陈化','越陈越香','收藏价值'], flavor:{浓郁:5,鲜爽:3,花香:2,回甘:5},
-    origin:'同产云南，与熟茶同根同源，却是完全不同的两种体验。生茶是普洱的"原始状态"，压制成饼后可以存放数十年，随时间缓慢转化，每一年的口感都在变化。买一饼生茶，是在投资一段时间的旅程。',
+    img:'img/shengpuer.jpg',
+    envImg:'https://images.unsplash.com/photo-1619546813926-a78fa6372cd2?w=1080&q=80&fit=crop',
+    tags:['茶马古道', '野生古树饼', '越陈越香投资'], flavor:{浓郁:5,鲜爽:3,花香:2,回甘:5},
+    origin:'同产云南西双版纳各生态古茶山。茶园分布在海拔1800米以上的重峦叠嶂间，古树盘根错节。生茶饼由于具备长达数十年的自然陈化潜力，使其不仅是文化旅游的硬通货，更具备了极高的生态资产收藏与收藏增值文旅属性。',
     craft:'杀青后直接晒干压饼，不经人工发酵。茶饼内的微生物在漫长岁月中自然发酵转化，这个过程无法人为干预也无法预测，充满变数。十年、二十年、三十年的老生茶，每一个年份都是独一无二的。',
     taste:'新茶汤色黄绿，苦涩明显，回甘强烈，有明显的山野气息；陈年后汤色变深，苦涩褪去，转为醇厚甘润。喝生茶需要一些勇气，但回报是其他茶类无法给予的深度体验。',
-    match:{drinks:['coffee','soda'],needs:['focus','explore'],flavors:['bold','sweet']},
-    img:'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=800&q=80&fit=crop' },
+    guide:'【盖碗控温功夫冲泡】新制生茶用92°C水，老生茶用100°C水。投茶5g。前几泡必须快冲快出（不超过8秒），否则苦涩度易过载。随着冲泡次数增加可逐渐延长闷泡时间，回甘犹如狂浪倾泻。',
+    buyUrl:'https://www.amazon.com/s?k=Raw+Puerh+Tea',
+    match:{drinks:['coffee','soda'],needs:['focus','explore'],flavors:['bold','sweet']} },
 
   { id:'jasmine', name:'茉莉花茶', nameEn:'Jasmine Tea', category:'花茶', accent:'#d0c080',
-    tags:['窨制','甜美','国民记忆'], flavor:{浓郁:2,鲜爽:3,花香:5,回甘:3},
-    origin:'福建福州、广西横县，茉莉花的主产区。花茶不是一种茶类，而是一种工艺——用鲜花窨制茶叶，让茶坯吸收花香。横县每年夏天，漫山遍野的茉莉花在夜间盛开，空气里都是甜香。',
+    img:'img/jasmine.jpg',
+    envImg:'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?w=1080&q=80&fit=crop',
+    tags:['福州横县', '千年窨制', '夏夜满城甜香'], flavor:{浓郁:2,鲜爽:3,花香:5,回甘:3},
+    origin:'广西横县与福建福州闽江口。横县是“世界茉莉花都”，入夏后万亩茉莉花海在夜间集中盛开。微风吹过，满城皆是甜香，结合闽江的水运文旅和浪漫花海景观，最能体现东方美学的闲适惬意。',
     craft:'将茶叶与茉莉鲜花分层堆放，让茶叶在密封环境中吸收花香，数小时后取出花朵，再重新堆放新鲜花朵——这个过程叫"窨花"，高档茉莉花茶要窨制七到九次。花朵最终全部筛除，留下的只有茶叶里的香气。',
     taste:'汤色黄绿清澈，茉莉花香清新甜美，持久不腻，入口鲜甜，口感柔和顺滑。是中国最受大众喜爱的茶之一，也是许多人童年记忆里"茶"的味道。',
-    match:{drinks:['juice','latte','soda'],needs:['relax','stomach'],flavors:['floral','light']},
-    img:'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=800&q=80&fit=crop' },
+    guide:'【多功能日常百搭冲泡】传统用玻璃杯或瓷壶90°C水直冲，香气高扬扑鼻。由于带有天然极其浓郁的花香，它是在海外做【冰茉莉绿茶】或与苏打水混合制作【无糖调味气泡茶/Tea Soda】的最佳原材料。',
+    buyUrl:'https://www.amazon.com/s?k=Jasmine+Green+Tea',
+    match:{drinks:['juice','latte','soda'],needs:['relax','stomach'],flavors:['floral','light']} },
 
   { id:'junshan', name:'君山银针', nameEn:'Jun Shan Silver Needle', category:'黄茶', accent:'#c8b050',
-    tags:['闷黄','贡茶','洞庭湖孤岛'], flavor:{浓郁:2,鲜爽:4,花香:3,回甘:4},
-    origin:'湖南岳阳洞庭湖中的君山岛，四面环水，湖雾终年不散。黄茶是中国最稀有的茶类，懂的人不多，产量极少。君山银针的历史可追溯到唐朝，曾是皇室贡品，岛屿的神秘感与茶的稀有感相互呼应。',
+    img:'img/junshan.jpg',
+    envImg:'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1080&q=80&fit=crop',
+    tags:['洞庭烟波', '闷黄工艺', '极其稀缺贡茶'], flavor:{浓郁:2,鲜爽:4,花香:3,回甘:4},
+    origin:'湖南岳阳洞庭湖中心的孤岛君山。八百里洞庭浩瀚无垠，君山岛四面环水。茶园常年被浩渺的湖雾彻底包裹，天然处于绝佳的独立生态闭环中。孤岛的独特地理与千年的岳阳楼文旅史诗交织，仙气十足。',
     craft:'黄茶最独特的工序是"闷黄"——杀青后将茶叶用纸包裹或堆放，在湿热环境中静置，让茶叶轻微发酵变黄。这道工序需要精确把控时间，过短则仍是绿茶口感，过长则品质下降。',
     taste:'汤色杏黄清澈，入口甘醇鲜爽，比绿茶少了青涩，比白茶多了一分甜润。有淡淡的玉米香和嫩香，口感极为温和细腻，是最不容易引起不适的茶之一。',
-    match:{drinks:['water','juice'],needs:['stomach','relax','explore'],flavors:['light','sweet']},
-    img:'https://images.unsplash.com/photo-1535469618671-e3c0d49f9bc8?w=800&q=80&fit=crop' },
+    guide:'【透明高玻璃杯观赏泡】用85°C纯净水，采用中投法冲泡。君山银针的特色是茶芽在杯中会“三起三落”，挺立如针。纯饮极度温和，有独特清甜熟玉米香，适合肠庭敏感者。',
+    buyUrl:'https://www.amazon.com/s?k=Jun+Shan+Silver+Needle',
+    match:{drinks:['water','juice'],needs:['stomach','relax','explore'],flavors:['light','sweet']} },
 
   { id:'mengding', name:'蒙顶黄芽', nameEn:'Mengding Yellow Bud', category:'黄茶', accent:'#d0b840',
-    tags:['两千年历史','焦糖香','茶叶原点'], flavor:{浓郁:2,鲜爽:4,花香:4,回甘:4},
-    origin:'四川雅安蒙顶山，"扬子江中水，蒙顶山上茶"，这句古话让蒙顶山在茶人心中地位崇高。蒙顶山是有文字记录的人工种茶最早的地方，距今已有两千年历史，是名副其实的中国茶叶原点之一。',
+    img:'img/mengding.jpg',
+    envImg:'https://images.unsplash.com/photo-1561571994-3c61c554181a?w=1080&q=80&fit=crop',
+    tags:['世界茶源', '雅安天漏', '焦糖麦芽香'], flavor:{浓郁:2,鲜爽:4,花香:4,回甘:4},
+    origin:'四川雅安蒙顶山。作为人类人工种茶最早的文字记载原点（两千年历史），蒙顶山因“西蜀天漏、常年烟雨”而自成仙境。连绵常青的古树群与茶祖文化，构成了西线中国茶源头寻根的重磅文旅圣地。',
     craft:'闷黄工艺与君山银针相近，但蒙顶黄芽的闷黄时间更长，分多次进行，芽头在纸包中缓慢转化。成品芽条匀整，金黄色泽，是黄茶中外形最为优雅的一款。',
-    taste:'汤色黄亮，甜香持久，入口甘醇，有淡淡的焦糖香和花香，口感介于绿茶和白茶之间，温润而有层次。是喝惯了绿茶想寻求一点变化的人的理想选择。',
-    match:{drinks:['water','juice'],needs:['stomach','explore'],flavors:['light','floral']},
-    img:'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&q=80&fit=crop' }
+    taste:'汤色黄亮，甜香持久，入口甘醇，有淡淡的焦糖香和花香，口感介于绿茶与白茶之间，温润而有层次。是喝惯了绿茶想寻求一点变化的人的理想选择。',
+    buyUrl:'https://www.amazon.com/s?k=Mengding+Yellow+Bud',
+    match:{drinks:['water','juice'],needs:['stomach','explore'],flavors:['light','floral']} }
 ];
 
 let currentStep = 0;
@@ -1177,19 +1281,35 @@ function openModal(id) {
     </div>
     <div class="modal-sections">
       <div class="modal-section">
-        <h3>📍 产地 · 风景意象</h3>
-        <p>${tea.origin}</p>
+        <h3>📍 核心产区 · 文旅风光意象</h3>
+        <p style="margin-bottom: 12px;">${tea.origin}</p>
+        ${tea.envImg ? `
+          <div class="modal-env-img-wrap" style="width: 100%; height: 240px; margin-top: 10px; overflow: hidden; border: 1px solid rgba(200,169,110,0.15);">
+            <img src="${tea.envImg}" style="width: 100%; height: 100%; object-fit: cover;" alt="${tea.name}风景"/>
+          </div>
+        ` : ''}
       </div>
       <div class="modal-section">
         <h3>✋ 制作工艺亮点</h3>
         <p>${tea.craft}</p>
       </div>
       <div class="modal-section">
+        <h3>💡 推荐饮用方式 / Brewing Guide</h3>
+        <p style="color:var(--gold-light); font-weight:400; line-height:1.8;">${tea.guide}</p>
+      </div>
+      <div class="modal-section">
         <h3>👄 口感描述</h3>
         <p>${tea.taste}</p>
         <div class="flavor-bar-wrap">${flavorHTML}</div>
       </div>
+    </div>
+    
+    <div class="modal-ecommerce-action">
+      <a href="${tea.buyUrl}" target="_blank" class="dtc-buy-btn">
+        Buy Now (Amazon / Shopify) →
+      </a>
     </div>`;
+    
   document.getElementById('modal-overlay').classList.add('open');
   document.getElementById('modal-overlay').scrollTop = 0;
   document.body.style.overflow = 'hidden';
